@@ -1,0 +1,4443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#081624" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href='data:application/manifest+json;utf8,{"name":"Tico Farm Manager","short_name":"Tico Farm","start_url":".","display":"standalone","background_color":"%23081624","theme_color":"%23081624","description":"Suivi intelligent de la couvaison","icons":[{"src":"data:image/svg%2bxml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 192 192%22%3E%3Crect width=%22192%22 height=%22192%22 rx=%2240%22 fill=%22%232196F3%22/%3E%3Ctext x=%2296%22 y=%22130%22 font-size=%22110%22 text-anchor=%22middle%22 fill=%22white%22%3E%F0%9F%90%94%3C/text%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}' />
+  <title>Tico Farm Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..700,0..1,-50..200&display=block" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    /* ============================================================
+       TICO FARM MANAGER — DARK FUTURIST UI
+       Design system: dark night blue, electric blue, turquoise
+    ============================================================ */
+    :root {
+      --bg: #081624;
+      --bg-2: #0a1a2c;
+      --card: #10243A;
+      --card-2: #15304b;
+      --card-3: #1a3a59;
+      --primary: #2196F3;
+      --primary-dark: #1976D2;
+      --primary-light: #64B5F6;
+      --primary-glow: rgba(33, 150, 243, 0.4);
+      --secondary: #00D4B8;
+      --secondary-dark: #00a896;
+      --secondary-light: #4dd4c4;
+      --secondary-glow: rgba(0, 212, 184, 0.4);
+      --accent: #FF9800;
+      --accent-light: #FFB74D;
+      --success: #32D74B;
+      --warning: #FFC107;
+      --danger: #FF5252;
+      --text: #ffffff;
+      --text-muted: #C7D2E3;
+      --text-soft: #8a9bb4;
+      --text-faint: #5a6b85;
+      --border: rgba(199, 210, 227, 0.08);
+      --border-strong: rgba(199, 210, 227, 0.16);
+      --radius: 20px;
+      --radius-sm: 14px;
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.45);
+      --shadow-glow: 0 0 24px rgba(33, 150, 243, 0.25);
+      --t: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+      overscroll-behavior: none;
+      letter-spacing: 0.01em;
+    }
+    h1, h2, h3, h4 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    input, select, textarea { font-family: inherit; font-size: inherit; color: var(--text); }
+    a { color: var(--primary); text-decoration: none; }
+
+    /* Material Symbols */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-size: 20px;
+      user-select: none;
+      vertical-align: middle;
+    }
+    .ms-fill { font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+    .ms-lg { font-size: 28px; }
+    .ms-xl { font-size: 36px; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+    @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(50, 215, 75, 0.6); } 50% { box-shadow: 0 0 0 14px rgba(50, 215, 75, 0); } }
+    @keyframes pulseGlowBlue { 0%, 100% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.6); } 50% { box-shadow: 0 0 0 14px rgba(33, 150, 243, 0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes floatRotate { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-8px) rotate(2deg); } }
+    @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    @keyframes drawIn { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
+    @keyframes countUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 4px currentColor); } 50% { filter: drop-shadow(0 0 12px currentColor); } }
+
+    .anim-fade { animation: fadeIn 0.4s ease both; }
+    .anim-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .anim-down { animation: fadeInDown 0.4s ease both; }
+
+    /* ============================================================
+       AUTH SCREEN
+    ============================================================ */
+    #authScreen {
+      min-height: 100vh; min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+      background:
+        radial-gradient(ellipse at top, rgba(33, 150, 243, 0.15), transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(0, 212, 184, 0.1), transparent 50%),
+        linear-gradient(180deg, #081624 0%, #0a1a2c 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #authScreen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(33, 150, 243, 0.08) 0, transparent 60px),
+        radial-gradient(circle at 80% 70%, rgba(0, 212, 184, 0.06) 0, transparent 60px);
+      pointer-events: none;
+    }
+    .auth-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .auth-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 32px -8px rgba(33, 150, 243, 0.5);
+      animation: float 3.5s ease-in-out infinite;
+      color: white;
+    }
+    .auth-logo .material-symbols-outlined { font-size: 44px; }
+    .auth-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .auth-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      font-size: 14px;
+    }
+    .auth-tabs {
+      display: flex;
+      background: var(--bg-2);
+      border-radius: var(--radius-pill);
+      padding: 5px;
+      margin-bottom: 24px;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 10px;
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: var(--t);
+    }
+    .auth-tab.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 12px -2px rgba(33, 150, 243, 0.4);
+    }
+
+    /* ============================================================
+       FORM ELEMENTS (dark)
+    ============================================================ */
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      background: var(--bg-2);
+      color: var(--text);
+      transition: var(--t);
+      font-size: 15px;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: var(--text-faint); }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--card);
+      box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.15);
+    }
+    .field input[type="date"] { color-scheme: dark; }
+    .field input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); cursor: pointer; }
+    .field select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23C7D2E3'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+    .field textarea { resize: vertical; min-height: 80px; }
+    .field-hint { font-size: 12px; color: var(--text-soft); margin-top: 6px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 14px;
+      transition: var(--t);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      pointer-events: none;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 6px 18px -4px rgba(33, 150, 243, 0.5);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 24px -4px rgba(33, 150, 243, 0.7); }
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+      color: var(--bg);
+      font-weight: 700;
+      box-shadow: 0 6px 18px -4px rgba(0, 212, 184, 0.5);
+    }
+    .btn-success {
+      background: linear-gradient(135deg, var(--success), #2ab83d);
+      color: var(--bg);
+      font-weight: 700;
+      box-shadow: 0 6px 18px -4px rgba(50, 215, 75, 0.5);
+    }
+    .btn-ghost {
+      background: var(--card-2);
+      color: var(--text);
+    }
+    .btn-ghost:hover { background: var(--card-3); }
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger), #d63d3d);
+      color: white;
+      box-shadow: 0 6px 18px -4px rgba(255, 82, 82, 0.4);
+    }
+    .btn-block { width: 100%; }
+    .btn-sm { padding: 9px 14px; font-size: 13px; }
+    .btn-icon { padding: 10px; min-width: 40px; }
+    .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+    /* ============================================================
+       APP LAYOUT
+    ============================================================ */
+    #app { display: none; min-height: 100vh; min-height: 100dvh; padding-bottom: 96px; }
+
+    /* Header */
+    .app-header {
+      position: relative;
+      padding: 18px 20px 28px;
+      color: white;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(33, 150, 243, 0.18) 0, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(0, 212, 184, 0.12) 0, transparent 40%),
+        linear-gradient(135deg, #081624 0%, #0d2238 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .app-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(90deg, transparent 49.5%, rgba(33, 150, 243, 0.06) 50%, transparent 50.5%),
+        linear-gradient(0deg, transparent 49.5%, rgba(33, 150, 243, 0.06) 50%, transparent 50.5%);
+      background-size: 60px 60px;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    .app-header::after {
+      content: '';
+      position: absolute;
+      right: -40px;
+      top: -20px;
+      width: 220px;
+      height: 220px;
+      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%2300D4B8' stroke-width='1.2' opacity='0.25'><path d='M 60 130 Q 55 90 80 80 Q 95 75 105 85 Q 110 92 118 88 Q 130 82 140 92 L 150 105 L 158 110 L 165 125 L 162 145 L 155 155 L 145 158 L 135 155 L 125 148 L 115 142 L 105 145 L 95 152 L 85 158 L 75 158 L 65 152 Z M 105 85 Q 110 75 105 70'/><circle cx='70' cy='145' r='2' fill='%2300D4B8'/><circle cx='158' cy='115' r='2' fill='%2300D4B8'/><circle cx='90' cy='80' r='1.5' fill='%232196F3'/><circle cx='125' cy='90' r='1.5' fill='%232196F3'/></svg>") center/contain no-repeat;
+      pointer-events: none;
+      animation: floatRotate 6s ease-in-out infinite;
+    }
+    .header-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .header-greeting { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+    .header-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: white;
+      box-shadow: 0 6px 16px -4px rgba(33, 150, 243, 0.5);
+      flex-shrink: 0;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+    }
+    .header-greeting-text { flex: 1; min-width: 0; }
+    .header-greeting-line1 {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .header-greeting-line1 strong { color: var(--text); font-weight: 700; }
+    .header-greeting-line2 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-greeting-line3 {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-top: 1px;
+    }
+    .header-actions { display: flex; align-items: center; gap: 6px; }
+    .header-icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: var(--t);
+      position: relative;
+      border: 1px solid var(--border);
+    }
+    .header-icon-btn:hover { background: var(--card-2); color: var(--text); }
+    .header-icon-btn .badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      background: var(--danger);
+      color: white;
+      border-radius: var(--radius-pill);
+      font-size: 10px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg);
+      animation: pulse 2s ease infinite;
+    }
+
+    /* Main content */
+    main { padding: 20px; max-width: 1200px; margin: 0 auto; }
+    .page { display: none; }
+    .page.active { display: block; animation: fadeIn 0.3s ease both; }
+
+    /* Section headers */
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .section-title-text { display: flex; align-items: center; gap: 8px; }
+    .section-title-text .material-symbols-outlined { color: var(--primary); }
+    .section-link {
+      font-size: 12px;
+      color: var(--secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================================
+       STAT CARDS (4 grandes cartes avec dégradés)
+    ============================================================ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      position: relative;
+      padding: 18px;
+      border-radius: var(--radius);
+      color: white;
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--t);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+    .stat-card-eggs { background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%); }
+    .stat-card-incubation { background: linear-gradient(135deg, #2196F3 0%, #1565C0 100%); }
+    .stat-card-hatching { background: linear-gradient(135deg, #00D4B8 0%, #00897B 100%); }
+    .stat-card-rate { background: linear-gradient(135deg, #9C27B0 0%, #6A1B9A 100%); }
+    .stat-card-illustration {
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 80px;
+      opacity: 0.18;
+      animation: float 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .stat-card-content { position: relative; z-index: 1; }
+    .stat-card-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      opacity: 0.9;
+      margin-bottom: 4px;
+    }
+    .stat-card-value {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .stat-card-sub {
+      font-size: 12px;
+      opacity: 0.85;
+      margin-bottom: 8px;
+    }
+    .stat-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .stat-card-badge.green { background: rgba(50, 215, 75, 0.3); }
+    .stat-card-badge.red { background: rgba(255, 82, 82, 0.3); }
+
+    /* ============================================================
+       ALERT CARDS
+    ============================================================ */
+    .alerts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .alert-card {
+      position: relative;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--warning);
+      transition: var(--t);
+      overflow: hidden;
+    }
+    .alert-card:hover { transform: translateX(2px); }
+    .alert-card.danger { border-left-color: var(--danger); }
+    .alert-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255, 193, 7, 0.05), transparent 50%);
+      pointer-events: none;
+    }
+    .alert-card.danger::before { background: linear-gradient(90deg, rgba(255, 82, 82, 0.08), transparent 50%); }
+    .alert-card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255, 193, 7, 0.15);
+      color: var(--warning);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .alert-card.danger .alert-card-icon { background: rgba(255, 82, 82, 0.15); color: var(--danger); }
+    .alert-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .alert-card-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .alert-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      background: rgba(255, 193, 7, 0.2);
+      color: var(--warning);
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 700;
+      transition: var(--t);
+    }
+    .alert-card-btn:hover { background: rgba(255, 193, 7, 0.3); }
+    .alert-card.danger .alert-card-btn { background: rgba(255, 82, 82, 0.2); color: var(--danger); }
+    .alert-card.danger .alert-card-btn:hover { background: rgba(255, 82, 82, 0.3); }
+
+    /* ============================================================
+       CHARTS
+    ============================================================ */
+    .chart-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+    }
+    .chart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .chart-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chart-title .material-symbols-outlined { color: var(--primary); }
+    .chart-wrap { position: relative; height: 220px; }
+    .chart-wrap.tall { height: 260px; }
+
+    /* ============================================================
+       CARDS GÉNÉRIQUES
+    ============================================================ */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 10px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title .material-symbols-outlined { color: var(--primary); }
+    .card-title-badge {
+      padding: 2px 8px;
+      background: var(--bg-2);
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* ============================================================
+       TIMELINE
+    ============================================================ */
+    .timeline {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      overflow-x: auto;
+      padding: 4px 0 12px;
+      scrollbar-width: thin;
+    }
+    .tl-step {
+      flex: 1;
+      min-width: 78px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .tl-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: calc(50% + 22px);
+      right: calc(-50% + 22px);
+      height: 2px;
+      background: var(--border-strong);
+      z-index: 0;
+    }
+    .tl-step.done:not(:last-child)::after { background: var(--success); }
+    .tl-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--card-2);
+      color: var(--text-faint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      z-index: 1;
+      transition: var(--t);
+      border: 2px solid var(--border-strong);
+    }
+    .tl-step.done .tl-circle {
+      background: var(--success);
+      color: var(--bg);
+      border-color: var(--success);
+      box-shadow: 0 0 16px rgba(50, 215, 75, 0.5);
+    }
+    .tl-step.current .tl-circle {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(33, 150, 243, 0.6);
+      animation: pulseGlowBlue 2s infinite;
+    }
+    .tl-step.current .tl-circle .material-symbols-outlined { font-size: 20px; }
+    .tl-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 8px;
+    }
+    .tl-step.done .tl-label, .tl-step.current .tl-label { color: var(--text); }
+
+    /* ============================================================
+       TABLE (Dernières incubations)
+    ============================================================ */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .data-table thead th {
+      text-align: left;
+      font-size: 11px;
+      color: var(--text-soft);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table tbody td {
+      padding: 12px 6px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text);
+      vertical-align: middle;
+    }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tbody tr { transition: var(--t); }
+    .data-table tbody tr:hover { background: var(--card-2); }
+
+    /* Progress bar (animated) */
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-2);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: var(--radius-pill);
+      transition: width 1s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0, rgba(255,255,255,0.3) 50%, transparent 100%);
+      animation: shimmer 2s infinite;
+      background-size: 200px 100%;
+    }
+    .progress-text {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 3px;
+      font-weight: 600;
+    }
+
+    /* ============================================================
+       SENSOR BLOCK
+    ============================================================ */
+    .sensors-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .sensor-card {
+      position: relative;
+      background: var(--card-2);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      border: 1px solid var(--border);
+      transition: var(--t);
+      overflow: hidden;
+    }
+    .sensor-card:hover { transform: translateY(-2px); }
+    .sensor-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .sensor-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(33, 150, 243, 0.15);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sensor-icon.temp { background: rgba(255, 152, 0, 0.15); color: var(--accent); }
+    .sensor-icon.hum { background: rgba(0, 212, 184, 0.15); color: var(--secondary); }
+    .sensor-icon.vent { background: rgba(33, 150, 243, 0.15); color: var(--primary); }
+    .sensor-icon.heat { background: rgba(255, 82, 82, 0.15); color: var(--danger); }
+    .sensor-value {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 2px;
+    }
+    .sensor-value small { font-size: 12px; font-weight: 600; color: var(--text-soft); margin-left: 2px; }
+    .sensor-name {
+      font-size: 11px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .sensor-mini-chart { height: 24px; }
+    .sensor-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .sensor-status.ok { background: rgba(50, 215, 75, 0.15); color: var(--success); }
+    .sensor-status.warn { background: rgba(255, 193, 7, 0.15); color: var(--warning); }
+    .sensor-status.bad { background: rgba(255, 82, 82, 0.15); color: var(--danger); }
+
+    /* ============================================================
+       AI ASSISTANT CARD
+    ============================================================ */
+    .ai-card {
+      position: relative;
+      padding: 22px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #0a1f3a 0%, #10243A 50%, #0d2645 100%);
+      border: 1px solid rgba(33, 150, 243, 0.25);
+      overflow: hidden;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow), 0 0 30px rgba(33, 150, 243, 0.15);
+    }
+    .ai-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(33, 150, 243, 0.15) 0, transparent 70%);
+      pointer-events: none;
+    }
+    .ai-card::after {
+      content: '';
+      position: absolute;
+      bottom: -40%;
+      left: -10%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(0, 212, 184, 0.1) 0, transparent 70%);
+      pointer-events: none;
+    }
+    .ai-card-content { position: relative; z-index: 1; }
+    .ai-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .ai-card-robot {
+      width: 70px;
+      height: 70px;
+      flex-shrink: 0;
+      animation: float 3.5s ease-in-out infinite;
+    }
+    .ai-card-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .ai-card-title {
+      font-size: 18px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .ai-card-badge-new {
+      padding: 2px 8px;
+      background: linear-gradient(135deg, var(--accent), #F57C00);
+      color: white;
+      border-radius: var(--radius-pill);
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .ai-card-features {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 14px 0 16px;
+    }
+    .ai-feature {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .ai-feature .material-symbols-outlined {
+      font-size: 16px;
+      color: var(--secondary);
+    }
+    .ai-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 4px 16px -2px rgba(33, 150, 243, 0.5);
+      transition: var(--t);
+    }
+    .ai-card-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px -2px rgba(33, 150, 243, 0.7); }
+
+    /* ============================================================
+       SPECIES CARD
+    ============================================================ */
+    .species-card {
+      position: relative;
+      padding: 18px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #10243A 0%, #1a3a59 100%);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .species-content {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .species-illustration {
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      box-shadow: 0 8px 20px -4px rgba(0, 212, 184, 0.4);
+    }
+    .species-info { flex: 1; min-width: 0; }
+    .species-label {
+      font-size: 11px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .species-name {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+    .species-scientific {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .species-select {
+      margin-top: 12px;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-2);
+      border: 1.5px solid var(--border-strong);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--t);
+    }
+    .species-select:focus { outline: none; border-color: var(--primary); }
+
+    /* ============================================================
+       QUICK ACTIONS
+    ============================================================ */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .qa-card {
+      padding: 16px 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--t);
+      position: relative;
+      overflow: hidden;
+    }
+    .qa-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: var(--shadow), 0 0 20px rgba(33, 150, 243, 0.2); }
+    .qa-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 6px 16px -4px rgba(33, 150, 243, 0.4);
+    }
+    .qa-card:nth-child(2) .qa-card-icon { background: linear-gradient(135deg, var(--accent), #F57C00); box-shadow: 0 6px 16px -4px rgba(255, 152, 0, 0.4); }
+    .qa-card:nth-child(3) .qa-card-icon { background: linear-gradient(135deg, var(--secondary), var(--secondary-dark)); box-shadow: 0 6px 16px -4px rgba(0, 212, 184, 0.4); }
+    .qa-card:nth-child(4) .qa-card-icon { background: linear-gradient(135deg, var(--danger), #d63d3d); box-shadow: 0 6px 16px -4px rgba(255, 82, 82, 0.4); }
+    .qa-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .qa-card-sub {
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    /* ============================================================
+       FAB (vert avec pulse)
+    ============================================================ */
+    .fab {
+      position: fixed;
+      bottom: 110px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--success), #2ab83d);
+      color: white;
+      box-shadow: 0 12px 28px -6px rgba(50, 215, 75, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      transition: var(--t);
+      animation: pulseGlow 2.5s infinite;
+    }
+    .fab:hover { transform: scale(1.08); }
+    .fab:active { transform: scale(0.95); }
+    .fab .material-symbols-outlined { font-size: 30px; }
+
+    /* ============================================================
+       BOTTOM NAV (6 items)
+    ============================================================ */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(8, 22, 36, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      z-index: 30;
+      padding: 8px 4px calc(env(safe-area-inset-bottom, 0px) + 8px);
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 6px 2px;
+      border-radius: 12px;
+      color: var(--text-soft);
+      font-size: 9px;
+      font-weight: 600;
+      transition: var(--t);
+      letter-spacing: 0.02em;
+    }
+    .nav-item .material-symbols-outlined { font-size: 22px; transition: var(--t); }
+    .nav-item.active {
+      color: var(--secondary);
+      background: rgba(0, 212, 184, 0.1);
+    }
+    .nav-item.active .material-symbols-outlined {
+      color: var(--secondary);
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+
+    /* ============================================================
+       LOT CARDS / LIST (page Œufs/Incubations/Éclosions)
+    ============================================================ */
+    .lot-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      transition: var(--t);
+      cursor: pointer;
+      animation: fadeInUp 0.3s ease both;
+    }
+    .lot-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .lot-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .lot-name {
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lot-name .material-symbols-outlined { color: var(--primary); font-size: 20px; }
+    .lot-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      font-size: 12px;
+    }
+    .lot-meta-item { }
+    .lot-meta-label {
+      color: var(--text-soft);
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .lot-meta-value {
+      font-weight: 700;
+      margin-top: 2px;
+      font-feature-settings: "tnum";
+    }
+    .lot-progress {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+    }
+    .progress-step {
+      flex: 1;
+      height: 4px;
+      background: var(--border-strong);
+      border-radius: 2px;
+    }
+    .progress-step.done { background: var(--success); }
+
+    /* ============================================================
+       BADGES
+    ============================================================ */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-success { background: rgba(50, 215, 75, 0.15); color: var(--success); }
+    .badge-warning { background: rgba(255, 193, 7, 0.15); color: var(--warning); }
+    .badge-danger { background: rgba(255, 82, 82, 0.15); color: var(--danger); }
+    .badge-info { background: rgba(33, 150, 243, 0.15); color: var(--primary-light); }
+    .badge-secondary { background: rgba(0, 212, 184, 0.15); color: var(--secondary); }
+    .badge-neutral { background: var(--card-2); color: var(--text-muted); }
+
+    /* Countdown */
+    .countdown {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 800;
+      font-family: 'Courier New', monospace;
+    }
+    .countdown.far { background: var(--card-2); color: var(--text-soft); }
+    .countdown.soon { background: rgba(255, 193, 7, 0.2); color: var(--warning); }
+    .countdown.today { background: var(--success); color: var(--bg); animation: pulse 1.5s infinite; }
+    .countdown.past { background: rgba(33, 150, 243, 0.2); color: var(--primary-light); }
+
+    /* Objectif indicator */
+    .obj-indicator {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      font-size: 14px;
+    }
+    .obj-ok { background: rgba(50, 215, 75, 0.2); }
+    .obj-warn { background: rgba(255, 193, 7, 0.2); }
+    .obj-bad { background: rgba(255, 82, 82, 0.2); }
+
+    /* ============================================================
+       MODAL
+    ============================================================ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 22, 36, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      animation: fadeIn 0.25s ease both;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: var(--card);
+      width: 100%;
+      max-width: 600px;
+      max-height: 92vh;
+      max-height: 92dvh;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+      border-top: 1px solid var(--border-strong);
+    }
+    .modal-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: linear-gradient(180deg, var(--card-2), var(--card));
+    }
+    .modal-title { font-size: 18px; font-weight: 800; }
+    .modal-close {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--bg-2);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--t);
+    }
+    .modal-close:hover { background: var(--card-3); color: var(--text); }
+    .modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      background: var(--bg-2);
+    }
+    .modal-footer .btn { flex: 1; }
+
+    /* Modal tabs */
+    .modal-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-2);
+      padding: 4px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .modal-tabs::-webkit-scrollbar { display: none; }
+    .modal-tab {
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      white-space: nowrap;
+      transition: var(--t);
+    }
+    .modal-tab.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 2px 8px -2px rgba(33, 150, 243, 0.4);
+    }
+
+    /* Stepper */
+    .stepper {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .stepper::-webkit-scrollbar { display: none; }
+    .step {
+      flex: 1;
+      min-width: 60px;
+      text-align: center;
+    }
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--card-2);
+      color: var(--text-faint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      margin: 0 auto 4px;
+      transition: var(--t);
+      border: 2px solid var(--border-strong);
+    }
+    .step.done .step-circle { background: var(--success); color: var(--bg); border-color: var(--success); }
+    .step.current .step-circle {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      animation: pulseGlowBlue 2s infinite;
+    }
+    .step-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .step.done .step-label, .step.current .step-label { color: var(--text); }
+
+    /* Stage block */
+    .stage {
+      background: var(--bg-2);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1.5px solid var(--border);
+      transition: var(--t);
+    }
+    .stage.active { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.1); }
+    .stage.locked { opacity: 0.92; }
+    .stage-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .stage-title {
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stage-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .stage-validated {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: rgba(50, 215, 75, 0.15);
+      color: var(--success);
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Computed values */
+    .computed-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .computed {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .computed-label {
+      font-size: 9px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .computed-value {
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--primary-light);
+      font-feature-settings: "tnum";
+    }
+
+    /* Calendar */
+    .calendar {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      border: 1px solid var(--border);
+    }
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+    .cal-day-name {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 6px 0;
+    }
+    .cal-day {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      padding: 4px;
+      background: var(--bg-2);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      font-size: 12px;
+      transition: var(--t);
+      cursor: pointer;
+      min-height: 50px;
+      border: 1px solid transparent;
+    }
+    .cal-day:hover { background: var(--card-2); }
+    .cal-day.empty { background: transparent; cursor: default; }
+    .cal-day.today { background: var(--card-2); border-color: var(--primary); box-shadow: 0 0 12px rgba(33, 150, 243, 0.3); }
+    .cal-day.has-incubation { background: rgba(33, 150, 243, 0.15); }
+    .cal-day.has-j7 { background: rgba(255, 152, 0, 0.15); }
+    .cal-day.has-j14 { background: rgba(255, 193, 7, 0.25); }
+    .cal-day.has-hatch { background: rgba(0, 212, 184, 0.15); }
+    .cal-day-num { font-weight: 700; font-size: 12px; }
+    .cal-day-marker {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      position: absolute;
+      top: 4px;
+      right: 4px;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      font-size: 11px;
+    }
+    .legend-item { display: flex; align-items: center; gap: 5px; color: var(--text-muted); }
+    .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+      max-width: 90vw;
+    }
+    .toast {
+      background: var(--card);
+      color: var(--text);
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      animation: fadeInDown 0.3s ease both;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border-strong);
+      max-width: 100%;
+    }
+    .toast.success { border-left: 3px solid var(--success); }
+    .toast.error { border-left: 3px solid var(--danger); }
+    .toast.warning { border-left: 3px solid var(--warning); }
+    .toast.info { border-left: 3px solid var(--primary); }
+
+    /* List item */
+    .list-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .list-item:last-child { border-bottom: none; }
+    .list-item-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(33, 150, 243, 0.15);
+      color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .list-item-content { flex: 1; min-width: 0; }
+    .list-item-title { font-weight: 600; font-size: 14px; }
+    .list-item-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+    /* Settings row */
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .settings-row:last-child { border-bottom: none; }
+    .settings-row-title { font-weight: 600; font-size: 14px; }
+    .settings-row-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+    .switch {
+      position: relative;
+      width: 50px;
+      height: 28px;
+      background: var(--card-2);
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: var(--t);
+      flex-shrink: 0;
+    }
+    .switch::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      background: var(--text-soft);
+      border-radius: 50%;
+      transition: var(--t);
+    }
+    .switch.on { background: var(--primary); }
+    .switch.on::after { left: 25px; background: white; }
+
+    /* Empty state */
+    .empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+    .empty-icon { font-size: 48px; opacity: 0.5; margin-bottom: 12px; }
+    .empty-icon .material-symbols-outlined { font-size: 48px; color: var(--text-faint); }
+    .empty-title { font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .empty-text { font-size: 13px; }
+
+    /* Help guide */
+    .help-day {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .help-day:last-child { border-bottom: none; }
+    .help-day-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .help-day-num.j7 { background: linear-gradient(135deg, var(--accent), #F57C00); }
+    .help-day-num.j14 { background: linear-gradient(135deg, var(--warning), #F57F17); }
+    .help-day-num.j19 { background: linear-gradient(135deg, var(--secondary), var(--secondary-dark)); }
+    .help-day-title { font-weight: 700; margin-bottom: 4px; }
+    .help-day-desc { font-size: 13px; color: var(--text-muted); }
+    .help-day-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--bg-2);
+      color: var(--secondary);
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    /* Search bar */
+    .search-bar {
+      position: relative;
+      margin-bottom: 14px;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 12px 14px 12px 44px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      background: var(--card);
+      color: var(--text);
+      font-size: 14px;
+      transition: var(--t);
+    }
+    .search-bar input::placeholder { color: var(--text-faint); }
+    .search-bar input:focus { outline: none; border-color: var(--primary); }
+    .search-bar .material-symbols-outlined {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-soft);
+      font-size: 20px;
+    }
+
+    /* Filter chips */
+    .filter-chips {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      margin-bottom: 12px;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .filter-chips::-webkit-scrollbar { display: none; }
+    .chip {
+      flex-shrink: 0;
+      padding: 7px 14px;
+      background: var(--card);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: var(--t);
+    }
+    .chip.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Notifications dropdown */
+    .notif-dropdown {
+      position: absolute;
+      top: 60px;
+      right: 16px;
+      width: 320px;
+      max-width: calc(100vw - 32px);
+      background: var(--card);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      z-index: 60;
+      display: none;
+      overflow: hidden;
+      animation: fadeInDown 0.25s ease both;
+    }
+    .notif-dropdown.show { display: block; }
+    .notif-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .notif-list { max-height: 360px; overflow-y: auto; }
+    .notif-item {
+      display: flex;
+      gap: 10px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      transition: var(--t);
+      cursor: pointer;
+    }
+    .notif-item:hover { background: var(--card-2); }
+    .notif-item:last-child { border-bottom: none; }
+    .notif-item-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .notif-item-icon.info { background: rgba(33, 150, 243, 0.15); color: var(--primary-light); }
+    .notif-item-icon.warn { background: rgba(255, 193, 7, 0.15); color: var(--warning); }
+    .notif-item-icon.danger { background: rgba(255, 82, 82, 0.15); color: var(--danger); }
+    .notif-item-icon.success { background: rgba(50, 215, 75, 0.15); color: var(--success); }
+    .notif-item-content { flex: 1; min-width: 0; }
+    .notif-item-title { font-size: 13px; font-weight: 600; }
+    .notif-item-text { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .notif-item-time { font-size: 10px; color: var(--text-soft); margin-top: 2px; }
+
+    /* Forecast strip */
+    .forecast-strip {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      padding: 4px 0;
+      scrollbar-width: none;
+    }
+    .forecast-strip::-webkit-scrollbar { display: none; }
+    .forecast-item {
+      flex-shrink: 0;
+      min-width: 180px;
+      padding: 12px 14px;
+      background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(0, 212, 184, 0.05));
+      border: 1px solid rgba(33, 150, 243, 0.2);
+      border-radius: var(--radius-sm);
+      animation: slideInRight 0.4s ease both;
+    }
+    .forecast-item-icon { font-size: 22px; margin-bottom: 4px; }
+    .forecast-item-title { font-size: 12px; font-weight: 700; }
+    .forecast-item-text { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .forecast-item-cd {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 2px 8px;
+      background: var(--success);
+      color: var(--bg);
+      border-radius: var(--radius-pill);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    /* Compact table */
+    .compact-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .compact-table th, .compact-table td {
+      padding: 8px 6px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .compact-table th {
+      font-size: 10px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================================
+       DESKTOP
+    ============================================================ */
+    @media (min-width: 900px) {
+      main { padding: 28px; }
+      .stats-grid { grid-template-columns: repeat(4, 1fr); }
+      .stat-card-value { font-size: 36px; }
+      .alerts-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .sensors-grid { grid-template-columns: repeat(4, 1fr); }
+      .quick-actions { grid-template-columns: repeat(4, 1fr); }
+      .modal { border-radius: var(--radius-lg); margin: auto; max-height: 88vh; }
+      .modal-overlay { align-items: center; padding: 20px; }
+      .lot-meta { grid-template-columns: repeat(4, 1fr); }
+      .section-title { font-size: 20px; }
+      .fab { bottom: 32px; right: 32px; width: 64px; height: 64px; }
+      .bottom-nav { display: none; }
+      #app { padding-bottom: 28px; }
+      .desktop-nav {
+        display: flex;
+        gap: 4px;
+        background: var(--card);
+        border-radius: var(--radius-pill);
+        padding: 6px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+        overflow-x: auto;
+      }
+      .desktop-nav-item {
+        padding: 10px 18px;
+        border-radius: var(--radius-pill);
+        color: var(--text-muted);
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: var(--t);
+        cursor: pointer;
+      }
+      .desktop-nav-item:hover { background: var(--card-2); }
+      .desktop-nav-item.active {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+      }
+      .desktop-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    }
+    @media (max-width: 899px) {
+      .desktop-nav { display: none; }
+    }
+
+    /* Hidden helper */
+    .hidden { display: none !important; }
+
+    /* Stagger animation for cards */
+    .stagger > * { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+    .stagger > *:nth-child(2) { animation-delay: 0.1s; }
+    .stagger > *:nth-child(3) { animation-delay: 0.15s; }
+    .stagger > *:nth-child(4) { animation-delay: 0.2s; }
+    .stagger > *:nth-child(5) { animation-delay: 0.25s; }
+    .stagger > *:nth-child(6) { animation-delay: 0.3s; }
+    .stagger > *:nth-child(7) { animation-delay: 0.35s; }
+    .stagger > *:nth-child(8) { animation-delay: 0.4s; }
+
+    /* Number animation */
+    .count-num { display: inline-block; animation: countUp 0.6s ease both; }
+  </style>
+</head>
+<body>
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- AUTH SCREEN -->
+  <div id="authScreen">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <span class="material-symbols-outlined ms-fill">poultry</span>
+      </div>
+      <h1 class="auth-title">Tico Farm Manager</h1>
+      <p class="auth-subtitle">Suivi intelligent de votre exploitation avicole</p>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login" onclick="switchAuthTab('login')">Connexion</button>
+        <button class="auth-tab" data-tab="register" onclick="switchAuthTab('register')">Inscription</button>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="field">
+          <label>Prénom</label>
+          <input type="text" name="firstName" required placeholder="Votre prénom" />
+        </div>
+        <div class="field">
+          <label>Nom de la ferme</label>
+          <input type="text" name="farmName" required placeholder="Ex: Ferme du Soleil" />
+        </div>
+        <div class="field">
+          <label>Mot de passe</label>
+          <input type="password" name="password" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px;">
+          <span class="material-symbols-outlined">login</span>
+          <span>Se connecter</span>
+        </button>
+      </form>
+
+      <form id="registerForm" class="hidden" onsubmit="handleRegister(event)">
+        <div class="field">
+          <label>Prénom</label>
+          <input type="text" name="firstName" required placeholder="Votre prénom" />
+        </div>
+        <div class="field">
+          <label>Nom de la ferme</label>
+          <input type="text" name="farmName" required placeholder="Ex: Ferme du Soleil" />
+        </div>
+        <div class="field">
+          <label>Adresse</label>
+          <input type="text" name="address" required placeholder="Ville, pays" />
+        </div>
+        <div class="field">
+          <label>Mot de passe</label>
+          <input type="password" name="password" required minlength="4" placeholder="Min. 4 caractères" />
+        </div>
+        <div class="field">
+          <label>Confirmer</label>
+          <input type="password" name="passwordConfirm" required minlength="4" placeholder="Retapez le mot de passe" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px;">
+          <span class="material-symbols-outlined">person_add</span>
+          <span>Créer mon compte</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="app">
+    <header class="app-header">
+      <div class="header-row">
+        <div class="header-greeting">
+          <div class="header-avatar" id="userAvatar">U</div>
+          <div class="header-greeting-text">
+            <div class="header-greeting-line1">Bonjour <strong id="userFirstName">Utilisateur</strong> 👋</div>
+            <div class="header-greeting-line2" id="userFarmName">Ma Ferme</div>
+            <div class="header-greeting-line3" id="currentDate">—</div>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="header-icon-btn" onclick="toggleNotifications()" aria-label="Notifications">
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="badge" id="notifBadge">0</span>
+          </button>
+          <button class="header-icon-btn" onclick="openUserMenu()" aria-label="Menu">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+        </div>
+      </div>
+      <!-- Notifications dropdown -->
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-header">
+          <span>Notifications</span>
+          <button class="btn btn-ghost btn-sm" onclick="clearNotifications()" style="padding:4px 10px;">Tout effacer</button>
+        </div>
+        <div class="notif-list" id="notifList"></div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Desktop nav -->
+      <nav class="desktop-nav" id="desktopNav">
+        <div class="desktop-nav-item active" data-page="home" onclick="switchPage('home')">
+          <span class="material-symbols-outlined">dashboard</span>Accueil
+        </div>
+        <div class="desktop-nav-item" data-page="eggs" onclick="switchPage('eggs')">
+          <span class="material-symbols-outlined">egg</span>Œufs
+        </div>
+        <div class="desktop-nav-item" data-page="incubations" onclick="switchPage('incubations')">
+          <span class="material-symbols-outlined">thermostat</span>Incubations
+        </div>
+        <div class="desktop-nav-item" data-page="hatching" onclick="switchPage('hatching')">
+          <span class="material-symbols-outlined">hatching</span>Éclosions
+        </div>
+        <div class="desktop-nav-item" data-page="stats" onclick="switchPage('stats')">
+          <span class="material-symbols-outlined">monitoring</span>Statistiques
+        </div>
+        <div class="desktop-nav-item" data-page="more" onclick="switchPage('more')">
+          <span class="material-symbols-outlined">more_horiz</span>Plus
+        </div>
+      </nav>
+
+      <!-- HOME / DASHBOARD -->
+      <div class="page active stagger" id="page-home">
+        <!-- Forecast strip -->
+        <div class="forecast-strip" id="forecastStrip"></div>
+
+        <!-- 4 stat cards -->
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- 2 alert cards -->
+        <div class="alerts-grid" id="alertsGrid"></div>
+
+        <!-- Charts -->
+        <div class="desktop-grid-2">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">
+                <span class="material-symbols-outlined">monitoring</span>
+                Taux d'éclosion
+              </div>
+              <span class="badge badge-info">7j</span>
+            </div>
+            <div class="chart-wrap"><canvas id="chartHatchRate"></canvas></div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">
+                <span class="material-symbols-outlined">pie_chart</span>
+                Distribution
+              </div>
+              <span class="badge badge-info">Lot</span>
+            </div>
+            <div class="chart-wrap"><canvas id="chartDonut"></canvas></div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="material-symbols-outlined">timeline</span>
+              Cycle de production
+            </div>
+            <span class="card-title-badge" id="timelineBadge">—</span>
+          </div>
+          <div class="timeline" id="timeline"></div>
+        </div>
+
+        <!-- Last incubations table -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="material-symbols-outlined">list_alt</span>
+              Dernières incubations
+            </div>
+            <button class="section-link" onclick="switchPage('incubations')">Voir tout</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table" id="recentTable">
+              <thead>
+                <tr><th>Lot</th><th>Date</th><th>Œufs</th><th>État</th><th>Progression</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Sensors block -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="material-symbols-outlined">sensors</span>
+              Capteurs en temps réel
+            </div>
+            <button class="section-link" onclick="switchPage('more');setTimeout(()=>switchSubPage('temperature'),100)">Détails</button>
+          </div>
+          <div class="sensors-grid" id="sensorsGrid"></div>
+        </div>
+
+        <!-- AI Assistant -->
+        <div class="ai-card">
+          <div class="ai-card-content">
+            <div class="ai-card-header">
+              <div style="flex:1;">
+                <div class="ai-card-title-row">
+                  <span class="ai-card-title">Assistant IA</span>
+                  <span class="ai-card-badge-new">Beta</span>
+                </div>
+                <p style="margin:0;color:var(--text-muted);font-size:13px;">Votre copilote intelligent pour la ferme</p>
+              </div>
+              <svg class="ai-card-robot" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="robotGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#2196F3"/>
+                    <stop offset="100%" stop-color="#00D4B8"/>
+                  </linearGradient>
+                </defs>
+                <!-- Antenna -->
+                <line x1="40" y1="14" x2="40" y2="22" stroke="#00D4B8" stroke-width="2"/>
+                <circle cx="40" cy="12" r="3" fill="#00D4B8" class="anim-pulse"/>
+                <!-- Head -->
+                <rect x="20" y="22" width="40" height="32" rx="8" fill="url(#robotGrad)" stroke="#64B5F6" stroke-width="1.5"/>
+                <!-- Eyes -->
+                <circle cx="30" cy="36" r="4" fill="#081624"/>
+                <circle cx="50" cy="36" r="4" fill="#081624"/>
+                <circle cx="31" cy="35" r="1.5" fill="#00D4B8"/>
+                <circle cx="51" cy="35" r="1.5" fill="#00D4B8"/>
+                <!-- Smile -->
+                <path d="M 32 44 Q 40 48 48 44" stroke="#081624" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <!-- Body -->
+                <rect x="26" y="56" width="28" height="18" rx="4" fill="#10243A" stroke="#2196F3" stroke-width="1.5"/>
+                <!-- Light -->
+                <circle cx="40" cy="65" r="3" fill="#00D4B8">
+                  <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <!-- Arms -->
+                <rect x="14" y="58" width="8" height="14" rx="3" fill="#2196F3"/>
+                <rect x="58" y="58" width="8" height="14" rx="3" fill="#2196F3"/>
+              </svg>
+            </div>
+            <div class="ai-card-features">
+              <div class="ai-feature">
+                <span class="material-symbols-outlined ms-fill">auto_awesome</span>
+                Analyse automatique de vos lots
+              </div>
+              <div class="ai-feature">
+                <span class="material-symbols-outlined ms-fill">insights</span>
+                Prévision des éclosions
+              </div>
+              <div class="ai-feature">
+                <span class="material-symbols-outlined ms-fill">troubleshoot</span>
+                Détection des anomalies
+              </div>
+              <div class="ai-feature">
+                <span class="material-symbols-outlined ms-fill">recommend</span>
+                Conseils personnalisés
+              </div>
+            </div>
+            <button class="ai-card-btn" onclick="aiRecommend()">
+              <span class="material-symbols-outlined">auto_awesome</span>
+              Voir mes recommandations
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Species card -->
+        <div class="species-card">
+          <div class="species-content">
+            <div class="species-illustration" id="speciesIllustration">🐔</div>
+            <div class="species-info">
+              <div class="species-label">Espèce sélectionnée</div>
+              <div class="species-name" id="speciesName">Poule</div>
+              <div class="species-scientific" id="speciesScientific">Gallus gallus domesticus</div>
+            </div>
+          </div>
+          <select class="species-select" id="speciesSelect" onchange="changeSpecies(this.value)">
+            <option value="poule">🐔 Poule</option>
+            <option value="canard">🦆 Canard</option>
+            <option value="oie">🪿 Oie</option>
+            <option value="pintade">🦚 Pintade</option>
+            <option value="dinde">🦃 Dinde</option>
+            <option value="caille">🐦 Caille</option>
+          </select>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="section-title">
+          <span class="section-title-text">
+            <span class="material-symbols-outlined">bolt</span>
+            Actions rapides
+          </span>
+        </div>
+        <div class="quick-actions">
+          <div class="qa-card" onclick="quickAction('collection')">
+            <div class="qa-card-icon"><span class="material-symbols-outlined ms-fill">egg</span></div>
+            <div class="qa-card-title">Collecte d'œufs</div>
+            <div class="qa-card-sub">Démarrer un lot</div>
+          </div>
+          <div class="qa-card" onclick="quickAction('incubation')">
+            <div class="qa-card-icon"><span class="material-symbols-outlined ms-fill">thermostat</span></div>
+            <div class="qa-card-title">Nouvelle incubation</div>
+            <div class="qa-card-sub">Mise en couveuse</div>
+          </div>
+          <div class="qa-card" onclick="quickAction('hatching')">
+            <div class="qa-card-icon"><span class="material-symbols-outlined ms-fill">hatching</span></div>
+            <div class="qa-card-title">Nouvelle éclosion</div>
+            <div class="qa-card-sub">Enregistrer J+21</div>
+          </div>
+          <div class="qa-card" onclick="quickAction('loss')">
+            <div class="qa-card-icon"><span class="material-symbols-outlined ms-fill">warning</span></div>
+            <div class="qa-card-title">Nouvelle perte</div>
+            <div class="qa-card-sub">Signaler mortalité</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EGGS PAGE -->
+      <div class="page" id="page-eggs">
+        <div class="section-title">
+          <span class="section-title-text">
+            <span class="material-symbols-outlined">egg</span>
+            Mes œufs
+          </span>
+          <button class="section-link" onclick="openLotModal(null)">+ Nouveau lot</button>
+        </div>
+        <p style="color:var(--text-muted);font-size:13px;margin-bottom:14px;">Lots en phase de collecte</p>
+        <div class="filter-chips">
+          <div class="chip active" data-filter="all" onclick="filterStageLots('eggs', 'all', this)">Tous</div>
+          <div class="chip" data-filter="collection" onclick="filterStageLots('eggs', 'collection', this)">Collecte</div>
+          <div class="chip" data-filter="incubation" onclick="filterStageLots('eggs', 'incubation', this)">Incubation</div>
+        </div>
+        <div id="eggsContainer"></div>
+      </div>
+
+      <!-- INCUBATIONS PAGE -->
+      <div class="page" id="page-incubations">
+        <div class="section-title">
+          <span class="section-title-text">
+            <span class="material-symbols-outlined">thermostat</span>
+            Incubations
+          </span>
+          <button class="section-link" onclick="openLotModal(null)">+ Nouveau lot</button>
+        </div>
+        <p style="color:var(--text-muted);font-size:13px;margin-bottom:14px;">Lots en cours d'incubation et mirages</p>
+        <div class="filter-chips">
+          <div class="chip active" data-filter="all" onclick="filterStageLots('incubations', 'all', this)">Tous</div>
+          <div class="chip" data-filter="incubation" onclick="filterStageLots('incubations', 'incubation', this)">Incubation</div>
+          <div class="chip" data-filter="j7" onclick="filterStageLots('incubations', 'j7', this)">Mirage J7</div>
+          <div class="chip" data-filter="j14" onclick="filterStageLots('incubations', 'j14', this)">Mirage J14</div>
+        </div>
+        <div id="incubationsContainer"></div>
+      </div>
+
+      <!-- HATCHING PAGE -->
+      <div class="page" id="page-hatching">
+        <div class="section-title">
+          <span class="section-title-text">
+            <span class="material-symbols-outlined">hatching</span>
+            Éclosions
+          </span>
+          <button class="section-link" onclick="openLotModal(null)">+ Nouveau lot</button>
+        </div>
+        <p style="color:var(--text-muted);font-size:13px;margin-bottom:14px;">Lots en éclosion et terminés</p>
+        <div class="filter-chips">
+          <div class="chip active" data-filter="all" onclick="filterStageLots('hatching', 'all', this)">Tous</div>
+          <div class="chip" data-filter="hatching" onclick="filterStageLots('hatching', 'hatching', this)">En cours</div>
+          <div class="chip" data-filter="completed" onclick="filterStageLots('hatching', 'completed', this)">Terminés</div>
+        </div>
+        <div id="hatchingContainer"></div>
+      </div>
+
+      <!-- STATS PAGE -->
+      <div class="page" id="page-stats">
+        <div class="section-title">
+          <span class="section-title-text">
+            <span class="material-symbols-outlined">monitoring</span>
+            Statistiques détaillées
+          </span>
+        </div>
+
+        <div class="kpi-grid" id="statsKpiGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;"></div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">
+              <span class="material-symbols-outlined">show_chart</span>
+              Évolution du taux d'éclosion
+            </div>
+          </div>
+          <div class="chart-wrap tall"><canvas id="chartHatchBig"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="material-symbols-outlined">emoji_events</span>
+              Performance par couveuse
+            </div>
+          </div>
+          <div id="incubatorStats"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="material-symbols-outlined">workspace_premium</span>
+              Performance par reproducteur
+            </div>
+          </div>
+          <div id="originStats"></div>
+        </div>
+      </div>
+
+      <!-- MORE / MENU PAGE -->
+      <div class="page" id="page-more">
+        <div class="section-title">
+          <span class="section-title-text">
+            <span class="material-symbols-outlined">more_horiz</span>
+            Plus d'options
+          </span>
+        </div>
+
+        <div class="card" onclick="setSubPage('calendar')" style="cursor:pointer;display:flex;align-items:center;gap:14px;">
+          <div class="list-item-icon"><span class="material-symbols-outlined">calendar_month</span></div>
+          <div class="list-item-content">
+            <div class="list-item-title">Calendrier</div>
+            <div class="list-item-sub">Vue mensuelle des lots</div>
+          </div>
+          <span class="material-symbols-outlined" style="color:var(--text-soft);">chevron_right</span>
+        </div>
+
+        <div class="card" onclick="setSubPage('temperature')" style="cursor:pointer;display:flex;align-items:center;gap:14px;">
+          <div class="list-item-icon"><span class="material-symbols-outlined">thermostat</span></div>
+          <div class="list-item-content">
+            <div class="list-item-title">Température & Humidité</div>
+            <div class="list-item-sub">Suivi quotidien des couveuses</div>
+          </div>
+          <span class="material-symbols-outlined" style="color:var(--text-soft);">chevron_right</span>
+        </div>
+
+        <div class="card" onclick="setSubPage('costs')" style="cursor:pointer;display:flex;align-items:center;gap:14px;">
+          <div class="list-item-icon"><span class="material-symbols-outlined">payments</span></div>
+          <div class="list-item-content">
+            <div class="list-item-title">Coûts de production</div>
+            <div class="list-item-sub">Coût par poussin</div>
+          </div>
+          <span class="material-symbols-outlined" style="color:var(--text-soft);">chevron_right</span>
+        </div>
+
+        <div class="card" onclick="setSubPage('clients')" style="cursor:pointer;display:flex;align-items:center;gap:14px;">
+          <div class="list-item-icon"><span class="material-symbols-outlined">group</span></div>
+          <div class="list-item-content">
+            <div class="list-item-title">Clients & commandes</div>
+            <div class="list-item-sub">Suivi des ventes</div>
+          </div>
+          <span class="material-symbols-outlined" style="color:var(--text-soft);">chevron_right</span>
+        </div>
+
+        <div class="card" onclick="setSubPage('help')" style="cursor:pointer;display:flex;align-items:center;gap:14px;">
+          <div class="list-item-icon"><span class="material-symbols-outlined">menu_book</span></div>
+          <div class="list-item-content">
+            <div class="list-item-title">Guide de couvaison</div>
+            <div class="list-item-sub">Aide & paramètres</div>
+          </div>
+          <span class="material-symbols-outlined" style="color:var(--text-soft);">chevron_right</span>
+        </div>
+      </div>
+
+      <!-- SUB-PAGES (calendar, temp, costs, clients, help) - shown when triggered from More -->
+      <div class="page" id="page-sub">
+        <button class="btn btn-ghost btn-sm" onclick="switchPage('more')" style="margin-bottom:14px;">
+          <span class="material-symbols-outlined">arrow_back</span>
+          Retour
+        </button>
+        <div id="subPageContent"></div>
+      </div>
+    </main>
+
+    <!-- FAB -->
+    <button class="fab" onclick="openLotModal(null)" id="fab" aria-label="Nouveau lot">
+      <span class="material-symbols-outlined">add</span>
+    </button>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <div class="nav-item active" data-page="home" onclick="switchPage('home')">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span>Accueil</span>
+      </div>
+      <div class="nav-item" data-page="eggs" onclick="switchPage('eggs')">
+        <span class="material-symbols-outlined">egg</span>
+        <span>Œufs</span>
+      </div>
+      <div class="nav-item" data-page="incubations" onclick="switchPage('incubations')">
+        <span class="material-symbols-outlined">thermostat</span>
+        <span>Incub.</span>
+      </div>
+      <div class="nav-item" data-page="hatching" onclick="switchPage('hatching')">
+        <span class="material-symbols-outlined">hatching</span>
+        <span>Éclos.</span>
+      </div>
+      <div class="nav-item" data-page="stats" onclick="switchPage('stats')">
+        <span class="material-symbols-outlined">monitoring</span>
+        <span>Stats</span>
+      </div>
+      <div class="nav-item" data-page="more" onclick="switchPage('more')">
+        <span class="material-symbols-outlined">more_horiz</span>
+        <span>Plus</span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- LOT MODAL -->
+  <div class="modal-overlay" id="lotModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="lotModalTitle">Nouveau lot</div>
+        <button class="modal-close" onclick="closeLotModal()"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="modal-body" id="lotModalBody"></div>
+    </div>
+  </div>
+
+  <!-- USER MENU MODAL -->
+  <div class="modal-overlay" id="userMenuModal">
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-header">
+        <div class="modal-title">Mon compte</div>
+        <button class="modal-close" onclick="closeUserMenu()"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="modal-body" id="userMenuBody"></div>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal" style="max-width:400px;">
+      <div class="modal-header">
+        <div class="modal-title" id="confirmTitle">Confirmer</div>
+        <button class="modal-close" onclick="closeConfirm()"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage" style="margin:0;color:var(--text-muted);"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeConfirm()">Annuler</button>
+        <button class="btn btn-danger" id="confirmOk">Confirmer</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ================================================================
+   TICO FARM MANAGER — DARK FUTURIST LOGIC
+   Note: Stockage local via LocalStorage (architecture Firebase-ready
+   pour migration future vers Realtime Database + Auth + Storage)
+================================================================ */
+'use strict';
+
+const STORAGE_KEY = 'ticoFarmManager';
+let state = loadState();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : getDefaultState();
+  } catch (e) { return getDefaultState(); }
+}
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+function getDefaultState() {
+  return {
+    users: [],
+    currentUserId: null,
+    lots: [],
+    tempLogs: [],
+    clients: [],
+    settings: { targetRate: 85, mortalityThreshold: 15 }
+  };
+}
+
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+
+function fmtDate(d) {
+  if (!d) return '—';
+  const dt = (d instanceof Date) ? d : new Date(d);
+  if (isNaN(dt)) return '—';
+  return `${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()}`;
+}
+function parseDate(s) {
+  if (!s) return null;
+  if (s instanceof Date) return s;
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return new Date(s);
+  const m = s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (m) return new Date(+m[3], +m[2]-1, +m[1]);
+  return new Date(s);
+}
+function addDays(date, n) { const d = new Date(date); d.setDate(d.getDate()+n); return d; }
+function daysBetween(a, b) {
+  return Math.floor((new Date(b).setHours(0,0,0,0) - new Date(a).setHours(0,0,0,0)) / 86400000);
+}
+function today() { const d = new Date(); d.setHours(0,0,0,0); return d; }
+function escHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function fmtNumber(n, decimals=0) {
+  if (n == null || isNaN(n)) return '0';
+  return Number(n).toLocaleString('fr-FR', { maximumFractionDigits: decimals, minimumFractionDigits: decimals });
+}
+function currentUser() { return state.users.find(u => u.id === state.currentUserId); }
+function userLots() { return state.lots.filter(l => l.userId === state.currentUserId); }
+function userTempLogs() { const ids = new Set(userLots().map(l => l.id)); return state.tempLogs.filter(t => ids.has(t.lotId)); }
+function userClients() { return state.clients.filter(c => c.userId === state.currentUserId); }
+
+/* Toast */
+function toast(msg, type='') {
+  const c = $('#toastContainer');
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  const icon = type==='success'?'check_circle':type==='error'?'error':type==='warning'?'warning':'info';
+  el.innerHTML = `<span class="material-symbols-outlined" style="font-size:18px;">${icon}</span><span>${escHtml(msg)}</span>`;
+  c.appendChild(el);
+  setTimeout(() => { el.style.opacity='0'; el.style.transform='translateY(-10px)'; el.style.transition='0.3s'; }, 2400);
+  setTimeout(() => el.remove(), 2800);
+}
+
+/* Confirm */
+let confirmCallback = null;
+function showConfirm(title, message, onOk) {
+  $('#confirmTitle').textContent = title;
+  $('#confirmMessage').textContent = message;
+  confirmCallback = onOk;
+  $('#confirmModal').classList.add('show');
+}
+function closeConfirm() { $('#confirmModal').classList.remove('show'); confirmCallback = null; $('#confirmOk').style.display = ''; }
+$('#confirmOk').addEventListener('click', () => { if (confirmCallback) confirmCallback(); closeConfirm(); });
+
+/* Auth */
+function switchAuthTab(tab) {
+  $$('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  $('#loginForm').classList.toggle('hidden', tab !== 'login');
+  $('#registerForm').classList.toggle('hidden', tab !== 'register');
+}
+
+function handleRegister(e) {
+  e.preventDefault();
+  const f = e.target;
+  const firstName = f.firstName.value.trim();
+  const farmName = f.farmName.value.trim();
+  const address = f.address.value.trim();
+  const password = f.password.value;
+  const passwordConfirm = f.passwordConfirm.value;
+  if (!firstName || !farmName || !address || !password) return toast('Tous les champs sont requis', 'error');
+  if (password !== passwordConfirm) return toast('Les mots de passe ne correspondent pas', 'error');
+  if (password.length < 4) return toast('Mot de passe trop court (min 4)', 'error');
+  if (state.users.some(u => u.firstName.toLowerCase() === firstName.toLowerCase() && u.farmName.toLowerCase() === farmName.toLowerCase())) {
+    return toast('Compte déjà existant', 'error');
+  }
+  const user = { id: uid(), firstName, farmName, address, password, createdAt: Date.now(), species: 'poule' };
+  state.users.push(user);
+  state.currentUserId = user.id;
+  saveState();
+  toast('Compte créé ! Bienvenue 🎉', 'success');
+  enterApp();
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const f = e.target;
+  const firstName = f.firstName.value.trim();
+  const farmName = f.farmName.value.trim();
+  const password = f.password.value;
+  const user = state.users.find(u =>
+    u.firstName.toLowerCase() === firstName.toLowerCase() &&
+    u.farmName.toLowerCase() === farmName.toLowerCase() &&
+    u.password === password
+  );
+  if (!user) return toast('Identifiants incorrects', 'error');
+  state.currentUserId = user.id;
+  saveState();
+  toast(`Bonjour ${user.firstName} !`, 'success');
+  enterApp();
+}
+
+function logout() {
+  state.currentUserId = null;
+  saveState();
+  $('#app').style.display = 'none';
+  $('#authScreen').style.display = 'flex';
+  closeUserMenu();
+  $('#loginForm').reset();
+}
+
+function enterApp() {
+  $('#authScreen').style.display = 'none';
+  $('#app').style.display = 'block';
+  const u = currentUser();
+  if (u) {
+    $('#userAvatar').textContent = u.firstName.charAt(0).toUpperCase();
+    $('#userFirstName').textContent = u.firstName;
+    $('#userFarmName').textContent = u.farmName;
+    $('#currentDate').textContent = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+    // Apply species
+    if (u.species) {
+      $('#speciesSelect').value = u.species;
+      updateSpeciesDisplay(u.species);
+    }
+  }
+  switchPage('home');
+  refreshAll();
+}
+
+/* Navigation */
+function switchPage(page) {
+  $$('.page').forEach(p => p.classList.remove('active'));
+  $$('.nav-item, .desktop-nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === page));
+  const target = $(`#page-${page}`);
+  if (target) target.classList.add('active');
+  // Trigger stagger animation re-trigger
+  if (target && target.classList.contains('stagger')) {
+    target.querySelectorAll(':scope > *').forEach((el, i) => {
+      el.style.animation = 'none';
+      setTimeout(() => { el.style.animation = ''; }, 10);
+    });
+  }
+  // Page-specific rendering
+  if (page === 'home') renderDashboard();
+  if (page === 'eggs') renderStagePage('eggs');
+  if (page === 'incubations') renderStagePage('incubations');
+  if (page === 'hatching') renderStagePage('hatching');
+  if (page === 'stats') renderStatsPage();
+  if (page === 'more') { /* static */ }
+  if (page === 'sub') { /* already rendered */ }
+  // Show FAB
+  $('#fab').style.display = ['home', 'eggs', 'incubations', 'hatching'].includes(page) ? 'flex' : 'none';
+}
+
+function setSubPage(sub) {
+  const subPage = $('#page-sub');
+  $$('.page').forEach(p => p.classList.remove('active'));
+  subPage.classList.add('active');
+  let html = '';
+  if (sub === 'calendar') html = renderCalendarContent();
+  else if (sub === 'temperature') html = renderTemperatureContent();
+  else if (sub === 'costs') html = renderCostsContent();
+  else if (sub === 'clients') html = renderClientsContent();
+  else if (sub === 'help') html = renderHelpContent();
+  $('#subPageContent').innerHTML = html;
+  if (sub === 'temperature') { populateTempLotSelect(); renderTempHistory(); renderTempChart(); }
+  if (sub === 'clients') { populateClientLotSelect(); renderClients(); }
+  if (sub === 'help') { /* help rendered */ }
+  // Re-render charts after DOM
+  setTimeout(() => { if (sub === 'temperature') renderTempChart(); }, 50);
+  $('#fab').style.display = 'none';
+}
+
+function openUserMenu() {
+  const u = currentUser();
+  if (!u) return;
+  $('#userMenuBody').innerHTML = `
+    <div style="text-align:center;padding:8px 0 20px;">
+      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;margin:0 auto 12px;box-shadow:0 12px 28px -8px rgba(33,150,243,0.5);border:2px solid rgba(255,255,255,0.15);">${escHtml(u.firstName.charAt(0).toUpperCase())}</div>
+      <div style="font-weight:800;font-size:20px;margin-bottom:2px;">${escHtml(u.firstName)}</div>
+      <div style="color:var(--text-muted);font-size:13px;">${escHtml(u.farmName)}</div>
+      <div style="color:var(--text-soft);font-size:12px;margin-top:2px;">${escHtml(u.address)}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button class="btn btn-ghost btn-block" onclick="switchPage('stats');closeUserMenu();" style="justify-content:flex-start;">
+        <span class="material-symbols-outlined">monitoring</span>Statistiques détaillées
+      </button>
+      <button class="btn btn-ghost btn-block" onclick="setSubPage('help');closeUserMenu();" style="justify-content:flex-start;">
+        <span class="material-symbols-outlined">menu_book</span>Guide & paramètres
+      </button>
+      <button class="btn btn-danger btn-block" onclick="logout()" style="margin-top:10px;">
+        <span class="material-symbols-outlined">logout</span>Déconnexion
+      </button>
+    </div>
+  `;
+  $('#userMenuModal').classList.add('show');
+}
+function closeUserMenu() { $('#userMenuModal').classList.remove('show'); }
+
+/* ================================================================
+   LOT MANAGEMENT
+================================================================ */
+function getStage(lot) {
+  if (lot.hatchingDate) return 'hatching';
+  if (lot.candling14Validated) return 'j14';
+  if (lot.candling7Validated) return 'j7';
+  if (lot.incubationValidated) return 'incubation';
+  return 'collection';
+}
+function stageLabel(s) {
+  return { collection: 'Collecte', incubation: 'Incubation', j7: 'Mirage J7', j14: 'Mirage J14', hatching: 'Éclosion' }[s] || s;
+}
+function calcLot(lot) {
+  const qty = +lot.collectionQuantity || 0;
+  const cracked = +lot.collectionCracked || 0;
+  const bonAIntroduire = Math.max(0, qty - cracked);
+  const j7Clear = +lot.candling7Clear || 0;
+  const j7Mort = +lot.candling7Mortality || 0;
+  const j7Fertilized = Math.max(0, bonAIntroduire - j7Clear - j7Mort);
+  const j14Cont = +lot.candling14Contaminated || 0;
+  const j14Mort = +lot.candling14Mortality || 0;
+  const j14Bons = Math.max(0, j7Fertilized - j14Cont - j14Mort);
+  const hatchMal = +lot.hatchingMalformation || 0;
+  const hatchDead = +lot.hatchingDead || 0;
+  const poussinsSains = Math.max(0, j14Bons - hatchMal - hatchDead);
+  const mortalityTotal = j7Mort + j14Mort + hatchMal + hatchDead;
+  const totalLoss = qty - poussinsSains;
+  const lossMirage = j7Clear + j7Mort + j14Cont + j14Mort;
+  const hatchRate = qty ? (poussinsSains / qty * 100) : 0;
+  const mortalityRate = qty ? (mortalityTotal / qty * 100) : 0;
+  return { bonAIntroduire, j7Fertilized, j14Bons, poussinsSains, mortalityTotal, totalLoss, lossMirage, hatchRate, mortalityRate };
+}
+function expectedHatchDate(lot) {
+  if (!lot.incubationDate) return null;
+  return addDays(parseDate(lot.incubationDate), 21);
+}
+function hatchCountdown(lot) {
+  const hatch = expectedHatchDate(lot);
+  if (!hatch) return null;
+  const diff = daysBetween(today(), hatch);
+  if (diff < 0) return { label: `+${-diff}j`, cls: 'past' };
+  if (diff === 0) return { label: "Aujourd'hui !", cls: 'today' };
+  if (diff <= 3) return { label: `J-${diff}`, cls: 'today' };
+  if (diff <= 7) return { label: `J-${diff}`, cls: 'soon' };
+  return { label: `J-${diff}`, cls: 'far' };
+}
+
+/* ================================================================
+   DASHBOARD
+================================================================ */
+let charts = {};
+function renderDashboard() {
+  const lots = userLots();
+  const completed = lots.filter(l => l.hatchingValidated);
+  const active = lots.filter(l => !l.hatchingValidated && l.collectionValidated);
+  const inIncubation = lots.filter(l => l.incubationValidated && !l.hatchingValidated);
+  const totalEggs = completed.reduce((s,l) => s + (+l.collectionQuantity||0), 0);
+  const totalChicks = completed.reduce((s,l) => s + calcLot(l).poussinsSains, 0);
+  const totalMort = completed.reduce((s,l) => s + calcLot(l).mortalityTotal, 0);
+  const avgHatch = totalEggs ? (totalChicks / totalEggs * 100) : 0;
+  const avgMort = totalEggs ? (totalMort / totalEggs * 100) : 0;
+
+  // Stats cards
+  $('#statsGrid').innerHTML = `
+    <div class="stat-card stat-card-eggs" onclick="switchPage('eggs')">
+      <div class="stat-card-illustration">🥚</div>
+      <div class="stat-card-content">
+        <div class="stat-card-label">Œufs collectés</div>
+        <div class="stat-card-value">${fmtNumber(totalEggs)}</div>
+        <div class="stat-card-sub">${lots.length} lot${lots.length>1?'s':''} au total</div>
+        <span class="stat-card-badge">${lots.length} lot${lots.length>1?'s':''}</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card-incubation" onclick="switchPage('incubations')">
+      <div class="stat-card-illustration">🌡️</div>
+      <div class="stat-card-content">
+        <div class="stat-card-label">En incubation</div>
+        <div class="stat-card-value">${inIncubation.length}</div>
+        <div class="stat-card-sub">Lots en cours</div>
+        <span class="stat-card-badge green">${active.length - inIncubation.length} J7/J14</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card-hatching" onclick="switchPage('hatching')">
+      <div class="stat-card-illustration">🐣</div>
+      <div class="stat-card-content">
+        <div class="stat-card-label">Éclosions</div>
+        <div class="stat-card-value">${fmtNumber(totalChicks)}</div>
+        <div class="stat-card-sub">${completed.length} lot${completed.length>1?'s':''} terminé${completed.length>1?'s':''}</div>
+        <span class="stat-card-badge">${completed.length} ✓</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card-rate" onclick="switchPage('stats')">
+      <div class="stat-card-illustration">📈</div>
+      <div class="stat-card-content">
+        <div class="stat-card-label">Taux d'éclosion</div>
+        <div class="stat-card-value">${avgHatch.toFixed(1)}%</div>
+        <div class="stat-card-sub">Moyenne globale</div>
+        <span class="stat-card-badge ${avgHatch >= (state.settings.targetRate||85) ? 'green' : 'red'}">
+          ${avgHatch >= (state.settings.targetRate||85) ? '✓ Objectif' : '⚠ Sous objectif'}
+        </span>
+      </div>
+    </div>
+  `;
+
+  // Forecast strip
+  const upcoming = active.filter(l => {
+    const h = expectedHatchDate(l);
+    if (!h) return false;
+    const d = daysBetween(today(), h);
+    return d >= -1 && d <= 7;
+  });
+  $('#forecastStrip').innerHTML = upcoming.length > 0
+    ? upcoming.map(l => {
+        const cd = hatchCountdown(l);
+        return `<div class="forecast-item" onclick="openLotModal('${l.id}')">
+          <div class="forecast-item-icon">🐣</div>
+          <div class="forecast-item-title">Lot ${escHtml(l.lotNumber || l.id.slice(-4))}</div>
+          <div class="forecast-item-text">Éclosion ${fmtDate(expectedHatchDate(l))}</div>
+          <span class="forecast-item-cd">${cd.label}</span>
+        </div>`;
+      }).join('')
+    : `<div class="forecast-item">
+        <div class="forecast-item-icon">📅</div>
+        <div class="forecast-item-title">Aucune éclosion imminente</div>
+        <div class="forecast-item-text">Démarrez un nouveau lot</div>
+      </div>`;
+
+  // Alerts
+  const lowHum = userTempLogs().filter(t => t.humidity < 50).slice(-3);
+  const j7Due = active.filter(l => {
+    if (!l.incubationValidated) return false;
+    const j7 = addDays(parseDate(l.incubationDate), 7);
+    const diff = daysBetween(today(), j7);
+    return diff >= 0 && diff <= 1;
+  });
+  const j14Due = active.filter(l => {
+    if (!l.candling7Validated) return false;
+    const j14 = addDays(parseDate(l.candling7Date), 7);
+    const diff = daysBetween(today(), j14);
+    return diff >= 0 && diff <= 1;
+  });
+  const toMirage = j7Due.length + j14Due.length;
+  const highMortLots = completed.filter(l => calcLot(l).mortalityRate > (state.settings.mortalityThreshold||15));
+
+  $('#alertsGrid').innerHTML = `
+    <div class="alert-card ${lowHum.length > 0 ? 'danger' : ''}">
+      <div class="alert-card-icon"><span class="material-symbols-outlined">water_drop</span></div>
+      <div class="alert-card-title">${lowHum.length > 0 ? 'Humidité trop faible' : 'Humidité stable'}</div>
+      <div class="alert-card-text">${lowHum.length > 0 ? `${lowHum.length} relevé(s) sous 50%` : 'Tous les relevés sont dans la plage'}</div>
+      <button class="alert-card-btn" onclick="setSubPage('temperature')">Voir relevés →</button>
+    </div>
+    <div class="alert-card">
+      <div class="alert-card-icon"><span class="material-symbols-outlined">visibility</span></div>
+      <div class="alert-card-title">${toMirage > 0 ? 'Œufs à mirer' : 'Mirages à jour'}</div>
+      <div class="alert-card-text">${toMirage > 0 ? `${toMirage} mirage(s) prévu(s) aujourd'hui/demain` : 'Aucun mirage urgent'}</div>
+      <button class="alert-card-btn" onclick="switchPage('incubations')">Gérer →</button>
+    </div>
+  `;
+
+  // Timeline - average progress across all active lots
+  const stageCounts = { collection: 0, incubation: 0, j7: 0, j14: 0, hatching: 0 };
+  active.forEach(l => { stageCounts[getStage(l)]++; });
+  let currentStage = 'collection';
+  if (stageCounts.hatching > 0) currentStage = 'hatching';
+  else if (stageCounts.j14 > 0) currentStage = 'j14';
+  else if (stageCounts.j7 > 0) currentStage = 'j7';
+  else if (stageCounts.incubation > 0) currentStage = 'incubation';
+
+  const tlSteps = [
+    { key: 'collection', label: 'Collecte', icon: 'egg' },
+    { key: 'incubation', label: 'Incubation', icon: 'thermostat' },
+    { key: 'j7', label: 'Mirage J7', icon: 'visibility' },
+    { key: 'j14', label: 'Mirage J14', icon: 'visibility' },
+    { key: 'hatching', label: 'Éclosion', icon: 'hatching' }
+  ];
+  const order = ['collection', 'incubation', 'j7', 'j14', 'hatching'];
+  const curIdx = order.indexOf(currentStage);
+  $('#timeline').innerHTML = tlSteps.map((s, i) => {
+    const cls = i < curIdx ? 'done' : i === curIdx ? 'current' : '';
+    return `<div class="tl-step ${cls}">
+      <div class="tl-circle">${i < curIdx ? '<span class="material-symbols-outlined">check</span>' : `<span class="material-symbols-outlined">${s.icon}</span>`}</div>
+      <div class="tl-label">${s.label}</div>
+    </div>`;
+  }).join('');
+  $('#timelineBadge').textContent = currentStage === 'collection' ? 'Démarrage' : currentStage === 'hatching' ? 'Éclosion' : 'En cours';
+
+  // Recent table
+  const recent = lots.sort((a,b) => (b.createdAt||0) - (a.createdAt||0)).slice(0, 5);
+  const tableBody = recent.length === 0
+    ? `<tr><td colspan="5"><div class="empty"><div class="empty-icon"><span class="material-symbols-outlined">inbox</span></div><div class="empty-text">Aucun lot pour le moment</div></div></td></tr>`
+    : recent.map(l => {
+        const c = calcLot(l);
+        const stage = getStage(l);
+        const stageBadges = { collection: ['badge-info', 'Collecte'], incubation: ['badge-secondary', 'Incubation'], j7: ['badge-warning', 'Mirage J7'], j14: ['badge-warning', 'Mirage J14'], hatching: ['badge-success', 'Éclosion'] };
+        const [bCls, bLabel] = stageBadges[stage];
+        const prog = (Object.values({ collection: l.collectionValidated, incubation: l.incubationValidated, j7: l.candling7Validated, j14: l.candling14Validated, hatching: l.hatchingValidated }).filter(Boolean).length / 5 * 100);
+        return `<tr onclick="openLotModal('${l.id}')" style="cursor:pointer;">
+          <td><strong>${escHtml(l.lotNumber || l.id.slice(-4))}</strong></td>
+          <td>${fmtDate(l.collectionDate)}</td>
+          <td><strong>${l.collectionQuantity||0}</strong></td>
+          <td><span class="badge ${bCls}">${bLabel}</span></td>
+          <td style="min-width:120px;">
+            <div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div>
+            <div class="progress-text">${prog.toFixed(0)}%</div>
+          </td>
+        </tr>`;
+      }).join('');
+  $('#recentTable tbody').innerHTML = tableBody;
+
+  // Sensors
+  const logs = userTempLogs().sort((a,b) => new Date(b.date) - new Date(a.date));
+  const recent10 = logs.slice(0, 10);
+  const avgT = recent10.length ? (recent10.reduce((s,l) => s + l.temperature, 0) / recent10.length) : 0;
+  const avgH = recent10.length ? (recent10.reduce((s,l) => s + l.humidity, 0) / recent10.length) : 0;
+  const minichart = (vals, color) => {
+    if (vals.length < 2) return '';
+    const max = Math.max(...vals), min = Math.min(...vals);
+    const range = max - min || 1;
+    const w = 100, h = 24;
+    const points = vals.map((v, i) => `${(i/(vals.length-1))*w},${h - ((v-min)/range)*h}`).join(' ');
+    return `<svg class="sensor-mini-chart" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" style="width:100%;height:24px;">
+      <polyline points="${points}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  };
+  const tempVals = recent10.slice().reverse().map(l => l.temperature);
+  const humVals = recent10.slice().reverse().map(l => l.humidity);
+  const ventVals = recent10.slice().reverse().map((_, i) => 50 + Math.sin(i)*10);
+  const heatVals = recent10.slice().reverse().map((_, i) => 60 + Math.cos(i*0.7)*8);
+  $('#sensorsGrid').innerHTML = `
+    <div class="sensor-card">
+      <div class="sensor-card-top">
+        <div class="sensor-icon temp"><span class="material-symbols-outlined">device_thermostat</span></div>
+        <span class="sensor-status ${avgT >= 37 && avgT <= 38.5 ? 'ok' : avgT > 0 ? 'warn' : ''}">${recent10.length > 0 ? (avgT >= 37 && avgT <= 38.5 ? 'OK' : 'Hors plage') : 'N/A'}</span>
+      </div>
+      <div class="sensor-name">Température</div>
+      <div class="sensor-value">${avgT ? avgT.toFixed(1) : '—'}<small>°C</small></div>
+      ${minichart(tempVals, '#FF9800')}
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-card-top">
+        <div class="sensor-icon hum"><span class="material-symbols-outlined">water_drop</span></div>
+        <span class="sensor-status ${avgH >= 50 && avgH <= 70 ? 'ok' : avgH > 0 ? 'warn' : ''}">${recent10.length > 0 ? (avgH >= 50 && avgH <= 70 ? 'OK' : 'À surveiller') : 'N/A'}</span>
+      </div>
+      <div class="sensor-name">Humidité</div>
+      <div class="sensor-value">${avgH ? avgH.toFixed(0) : '—'}<small>%</small></div>
+      ${minichart(humVals, '#00D4B8')}
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-card-top">
+        <div class="sensor-icon vent"><span class="material-symbols-outlined">air</span></div>
+        <span class="sensor-status ok">Auto</span>
+      </div>
+      <div class="sensor-name">Ventilation</div>
+      <div class="sensor-value">50<small>%</small></div>
+      ${minichart(ventVals, '#2196F3')}
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-card-top">
+        <div class="sensor-icon heat"><span class="material-symbols-outlined">local_fire_department</span></div>
+        <span class="sensor-status ok">ON</span>
+      </div>
+      <div class="sensor-name">Chauffage</div>
+      <div class="sensor-value">60<small>%</small></div>
+      ${minichart(heatVals, '#FF5252')}
+    </div>
+  `;
+
+  // Charts
+  drawMainCharts();
+
+  // Update notifications badge
+  updateNotifications();
+
+  // Update species display
+  const u = currentUser();
+  if (u && u.species) updateSpeciesDisplay(u.species);
+}
+
+function drawMainCharts() {
+  const completed = userLots().filter(l => l.hatchingValidated).sort((a,b) => new Date(a.hatchingDate) - new Date(b.hatchingDate));
+  const labels = completed.map(l => l.lotNumber || l.id.slice(-4));
+  const hatchRates = completed.map(l => +calcLot(l).hatchRate.toFixed(1));
+  const mortalityRates = completed.map(l => +calcLot(l).mortalityRate.toFixed(1));
+
+  if (charts.hatch) charts.hatch.destroy();
+  if (charts.donut) charts.donut.destroy();
+
+  Chart.defaults.color = '#C7D2E3';
+  Chart.defaults.font.family = 'Arial, sans-serif';
+  Chart.defaults.borderColor = 'rgba(199, 210, 227, 0.08)';
+
+  const ctx1 = document.getElementById('chartHatchRate');
+  if (ctx1) {
+    charts.hatch = new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: labels.length ? labels : ['—'],
+        datasets: [
+          {
+            label: "Taux d'éclosion",
+            data: hatchRates.length ? hatchRates : [0],
+            borderColor: '#00D4B8',
+            backgroundColor: 'rgba(0, 212, 184, 0.15)',
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#00D4B8',
+            pointBorderColor: '#081624',
+            pointBorderWidth: 2,
+            pointRadius: 5,
+            pointHoverRadius: 7
+          },
+          {
+            label: 'Mortalité',
+            data: mortalityRates.length ? mortalityRates : [0],
+            borderColor: '#FF5252',
+            backgroundColor: 'transparent',
+            tension: 0.4,
+            pointRadius: 4,
+            borderDash: [5, 5]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 1000, easing: 'easeOutQuart' },
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12 } }
+        },
+        scales: {
+          y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(199, 210, 227, 0.05)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  // Donut chart
+  const ctx2 = document.getElementById('chartDonut');
+  if (ctx2) {
+    const all = userLots();
+    const c = all.reduce((s, l) => {
+      const cl = calcLot(l);
+      return { sains: s.sains + cl.poussinsSains, pertes: s.pertes + cl.mortalityTotal, autres: s.autres + (l.collectionQuantity ? Math.max(0, l.collectionQuantity - cl.poussinsSains - cl.mortalityTotal) : 0) };
+    }, { sains: 0, pertes: 0, autres: 0 });
+    const total = c.sains + c.pertes + c.autres;
+    charts.donut = new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: ['Poussins sains', 'Pertes', 'Clairs/Contaminés'],
+        datasets: [{
+          data: total > 0 ? [c.sains, c.pertes, c.autres] : [1, 0, 0],
+          backgroundColor: ['#00D4B8', '#FF5252', '#FF9800'],
+          borderColor: '#10243A',
+          borderWidth: 3,
+          hoverOffset: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { animateRotate: true, duration: 1200 },
+        cutout: '68%',
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12, padding: 12 } }
+        }
+      }
+    });
+  }
+}
+
+/* ================================================================
+   STATS PAGE
+================================================================ */
+function renderStatsPage() {
+  const lots = userLots();
+  const completed = lots.filter(l => l.hatchingValidated);
+  const totalEggs = completed.reduce((s,l) => s + (+l.collectionQuantity||0), 0);
+  const totalChicks = completed.reduce((s,l) => s + calcLot(l).poussinsSains, 0);
+  const totalMort = completed.reduce((s,l) => s + calcLot(l).mortalityTotal, 0);
+  const avgHatch = totalEggs ? (totalChicks / totalEggs * 100) : 0;
+  const avgMort = totalEggs ? (totalMort / totalEggs * 100) : 0;
+  const totalIntro = completed.reduce((s,l) => s + calcLot(l).bonAIntroduire, 0);
+  const lossMirage = completed.reduce((s,l) => s + calcLot(l).lossMirage, 0);
+  const avgLossMirage = totalIntro ? (lossMirage / totalIntro * 100) : 0;
+
+  $('#statsKpiGrid').innerHTML = `
+    <div class="kpi-grid" style="display:contents;">
+      <div class="card" style="text-align:center;background:linear-gradient(135deg, rgba(0,212,184,0.1), transparent);">
+        <div style="font-size:12px;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.05em;font-weight:700;">Taux d'éclosion</div>
+        <div style="font-size:32px;font-weight:800;color:var(--secondary);margin:6px 0;">${avgHatch.toFixed(1)}%</div>
+        <div style="font-size:12px;color:var(--text-muted);">Objectif ${state.settings.targetRate}%</div>
+      </div>
+      <div class="card" style="text-align:center;background:linear-gradient(135deg, rgba(255,82,82,0.1), transparent);">
+        <div style="font-size:12px;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.05em;font-weight:700;">Mortalité</div>
+        <div style="font-size:32px;font-weight:800;color:var(--danger);margin:6px 0;">${avgMort.toFixed(1)}%</div>
+        <div style="font-size:12px;color:var(--text-muted);">${fmtNumber(totalMort)} œufs</div>
+      </div>
+      <div class="card" style="text-align:center;background:linear-gradient(135deg, rgba(255,193,7,0.1), transparent);">
+        <div style="font-size:12px;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.05em;font-weight:700;">Perte mirage</div>
+        <div style="font-size:32px;font-weight:800;color:var(--warning);margin:6px 0;">${avgLossMirage.toFixed(1)}%</div>
+        <div style="font-size:12px;color:var(--text-muted);">Clairs + contaminés</div>
+      </div>
+      <div class="card" style="text-align:center;background:linear-gradient(135deg, rgba(33,150,243,0.1), transparent);">
+        <div style="font-size:12px;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.05em;font-weight:700;">Poussins</div>
+        <div style="font-size:32px;font-weight:800;color:var(--primary-light);margin:6px 0;">${fmtNumber(totalChicks)}</div>
+        <div style="font-size:12px;color:var(--text-muted);">${completed.length} lots</div>
+      </div>
+    </div>
+  `;
+
+  // Big hatch chart
+  if (charts.hatchBig) charts.hatchBig.destroy();
+  const labels = completed.map(l => l.lotNumber || l.id.slice(-4));
+  const hatchRates = completed.map(l => +calcLot(l).hatchRate.toFixed(1));
+  const ctx = document.getElementById('chartHatchBig');
+  if (ctx) {
+    charts.hatchBig = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels.length ? labels : ['Aucune donnée'],
+        datasets: [{
+          label: "Taux d'éclosion (%)",
+          data: hatchRates.length ? hatchRates : [0],
+          borderColor: '#00D4B8',
+          backgroundColor: 'rgba(0, 212, 184, 0.2)',
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: '#00D4B8',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 1500 },
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(199, 210, 227, 0.05)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  // Incubator stats
+  const groups = {};
+  completed.forEach(l => {
+    const key = l.incubator || 'C-1';
+    if (!groups[key]) groups[key] = { lots: 0, eggs: 0, chicks: 0 };
+    groups[key].lots++;
+    groups[key].eggs += (+l.collectionQuantity || 0);
+    groups[key].chicks += calcLot(l).poussinsSains;
+  });
+  const sorted = Object.entries(groups).map(([k, v]) => ({ name: k, ...v, rate: v.eggs ? (v.chicks/v.eggs*100) : 0 })).sort((a,b) => b.rate - a.rate);
+  $('#incubatorStats').innerHTML = sorted.length === 0 ? '<div class="empty"><div class="empty-text">Aucun lot complété</div></div>' : sorted.map((g, i) => `
+    <div class="list-item">
+      <div class="list-item-icon" style="${i===0?'background:rgba(255,193,7,0.15);color:var(--warning);':''}"><span class="material-symbols-outlined">${i===0?'emoji_events':'thermostat'}</span></div>
+      <div class="list-item-content">
+        <div class="list-item-title">Couveuse ${escHtml(g.name)} ${i===0?'🥇':''}</div>
+        <div class="list-item-sub">${g.lots} lot${g.lots>1?'s':''} · ${g.eggs} œufs · ${g.chicks} poussins</div>
+      </div>
+      <div style="font-weight:800;color:${g.rate>=state.settings.targetRate?'var(--secondary)':'var(--accent)'};">${g.rate.toFixed(1)}%</div>
+    </div>
+  `).join('');
+
+  // Origin stats
+  const origins = {};
+  completed.forEach(l => {
+    const key = l.origin || l.breed || 'Non spécifié';
+    if (!origins[key]) origins[key] = { lots: 0, eggs: 0, chicks: 0 };
+    origins[key].lots++;
+    origins[key].eggs += (+l.collectionQuantity || 0);
+    origins[key].chicks += calcLot(l).poussinsSains;
+  });
+  const sortedOrigins = Object.entries(origins).map(([k, v]) => ({ name: k, ...v, rate: v.eggs ? (v.chicks/v.eggs*100) : 0 })).sort((a,b) => b.rate - a.rate);
+  $('#originStats').innerHTML = sortedOrigins.length === 0 ? '<div class="empty"><div class="empty-text">Aucun reproducteur suivi</div></div>' : sortedOrigins.map((g, i) => `
+    <div class="list-item">
+      <div class="list-item-icon" style="${i===0?'background:rgba(255,193,7,0.15);color:var(--warning);':''}"><span class="material-symbols-outlined">${i===0?'workspace_premium':'egg'}</span></div>
+      <div class="list-item-content">
+        <div class="list-item-title">${escHtml(g.name)}</div>
+        <div class="list-item-sub">${g.lots} lot${g.lots>1?'s':''} · ${g.chicks} poussins</div>
+      </div>
+      <div style="font-weight:800;color:${g.rate>=state.settings.targetRate?'var(--secondary)':'var(--accent)'};">${g.rate.toFixed(1)}%</div>
+    </div>
+  `).join('');
+}
+
+/* ================================================================
+   STAGE PAGES (eggs, incubations, hatching)
+================================================================ */
+let currentStageFilter = { eggs: 'all', incubations: 'all', hatching: 'all' };
+
+function filterStageLots(page, filter, el) {
+  currentStageFilter[page] = filter;
+  el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderStagePage(page);
+}
+
+function renderStagePage(page) {
+  const lots = userLots();
+  const filter = currentStageFilter[page];
+  let filtered;
+  if (page === 'eggs') {
+    filtered = lots.filter(l => {
+      const stage = getStage(l);
+      if (filter === 'all') return stage === 'collection' || stage === 'incubation';
+      return stage === filter;
+    });
+  } else if (page === 'incubations') {
+    filtered = lots.filter(l => {
+      const stage = getStage(l);
+      if (filter === 'all') return ['incubation', 'j7', 'j14'].includes(stage);
+      return stage === filter;
+    });
+  } else if (page === 'hatching') {
+    filtered = lots.filter(l => {
+      if (filter === 'all') return getStage(l) === 'hatching' || l.hatchingValidated;
+      if (filter === 'hatching') return getStage(l) === 'hatching' && !l.hatchingValidated;
+      return l.hatchingValidated;
+    });
+  }
+  const containerId = page === 'eggs' ? 'eggsContainer' : page === 'incubations' ? 'incubationsContainer' : 'hatchingContainer';
+  renderLotList($('#' + containerId), filtered);
+}
+
+function renderLotList(container, lots) {
+  if (lots.length === 0) {
+    container.innerHTML = `<div class="empty"><div class="empty-icon"><span class="material-symbols-outlined">inbox</span></div><div class="empty-title">Aucun lot</div><div class="empty-text">Appuyez sur + pour démarrer</div></div>`;
+    return;
+  }
+  lots.sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
+  container.innerHTML = lots.map(lot => {
+    const c = calcLot(lot);
+    const stage = getStage(lot);
+    const cd = hatchCountdown(lot);
+    const target = state.settings.targetRate || 85;
+    let objCls = 'obj-ok', objIcon = '✅';
+    if (lot.hatchingValidated) {
+      if (c.hatchRate >= target) { objCls = 'obj-ok'; objIcon = '✅'; }
+      else if (c.hatchRate >= target - 10) { objCls = 'obj-warn'; objIcon = '⚠️'; }
+      else { objCls = 'obj-bad'; objIcon = '❌'; }
+    }
+    const stageBadges = { collection: ['badge-info', 'Collecte'], incubation: ['badge-secondary', 'Incubation'], j7: ['badge-warning', 'Mirage J7'], j14: ['badge-warning', 'Mirage J14'], hatching: ['badge-success', 'Éclosion'] };
+    const [bCls, bLabel] = stageBadges[stage];
+    return `
+      <div class="lot-card" onclick="openLotModal('${lot.id}')">
+        <div class="lot-card-top">
+          <div class="lot-name">
+            <span class="material-symbols-outlined">${stage === 'hatching' ? 'hatching' : 'egg'}</span>
+            <span>Lot ${escHtml(lot.lotNumber || lot.id.slice(-4))}</span>
+            <span class="obj-indicator ${objCls}">${objIcon}</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            ${cd ? `<span class="countdown ${cd.cls}">${cd.label}</span>` : ''}
+            <span class="badge ${bCls}">${bLabel}</span>
+          </div>
+        </div>
+        <div class="lot-meta">
+          <div class="lot-meta-item">
+            <div class="lot-meta-label">Collecte</div>
+            <div class="lot-meta-value">${fmtDate(lot.collectionDate)} · ${lot.collectionQuantity||0} œufs</div>
+          </div>
+          <div class="lot-meta-item">
+            <div class="lot-meta-label">Bon à introduire</div>
+            <div class="lot-meta-value">${c.bonAIntroduire}</div>
+          </div>
+          <div class="lot-meta-item">
+            <div class="lot-meta-label">Fécondés J7</div>
+            <div class="lot-meta-value">${c.j7Fertilized}</div>
+          </div>
+          <div class="lot-meta-item">
+            <div class="lot-meta-label">Bons J14</div>
+            <div class="lot-meta-value">${c.j14Bons}</div>
+          </div>
+          <div class="lot-meta-item">
+            <div class="lot-meta-label">Éclosion prévue</div>
+            <div class="lot-meta-value">${fmtDate(expectedHatchDate(lot))}</div>
+          </div>
+          <div class="lot-meta-item">
+            <div class="lot-meta-label">Résultat</div>
+            <div class="lot-meta-value" style="color:${lot.hatchingValidated ? 'var(--secondary)' : 'var(--text-soft)'};">${c.poussinsSains} poussins</div>
+          </div>
+        </div>
+        <div class="lot-progress">
+          <div class="progress-step ${lot.collectionValidated?'done':''}"></div>
+          <div class="progress-step ${lot.incubationValidated?'done':''}"></div>
+          <div class="progress-step ${lot.candling7Validated?'done':''}"></div>
+          <div class="progress-step ${lot.candling14Validated?'done':''}"></div>
+          <div class="progress-step ${lot.hatchingValidated?'done':''}"></div>
+        </div>
+        ${lot.notes ? `<div style="margin-top:10px;font-size:12px;color:var(--text-muted);font-style:italic;">📝 ${escHtml(lot.notes.slice(0,80))}${lot.notes.length>80?'…':''}</div>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+/* ================================================================
+   LOT MODAL (step-by-step workflow)
+================================================================ */
+let currentLotId = null;
+let modalMode = 'create';
+let activeTab = 'info';
+
+function openLotModal(lotId) {
+  currentLotId = lotId;
+  modalMode = lotId ? 'edit' : 'create';
+  activeTab = 'info';
+  renderLotModal();
+  $('#lotModal').classList.add('show');
+}
+function closeLotModal() {
+  $('#lotModal').classList.remove('show');
+  currentLotId = null;
+}
+
+function getCurrentLot() {
+  return currentLotId ? state.lots.find(l => l.id === currentLotId) : null;
+}
+
+function renderLotModal() {
+  const lot = getCurrentLot();
+  $('#lotModalTitle').textContent = modalMode === 'create' ? 'Nouveau lot' : `Lot ${escHtml(lot.lotNumber || lot.id.slice(-4))}`;
+  const tabs = [
+    { id: 'info', label: 'Infos' },
+    { id: 'collection', label: '1. Collecte' },
+    { id: 'incubation', label: '2. Incubation' },
+    { id: 'j7', label: '3. J7' },
+    { id: 'j14', label: '4. J14' },
+    { id: 'hatching', label: '5. Éclosion' },
+    { id: 'recap', label: 'Résultat' }
+  ];
+  let tabsHtml = '<div class="modal-tabs">';
+  tabs.forEach(t => { tabsHtml += `<button class="modal-tab ${activeTab===t.id?'active':''}" onclick="setActiveTab('${t.id}')">${t.label}</button>`; });
+  tabsHtml += '</div>';
+  let body = tabsHtml;
+  if (activeTab === 'info') body += renderTabInfo(lot);
+  else if (activeTab === 'collection') body += renderTabCollection(lot);
+  else if (activeTab === 'incubation') body += renderTabIncubation(lot);
+  else if (activeTab === 'j7') body += renderTabJ7(lot);
+  else if (activeTab === 'j14') body += renderTabJ14(lot);
+  else if (activeTab === 'hatching') body += renderTabHatching(lot);
+  else if (activeTab === 'recap') body += renderTabRecap(lot);
+  body += `<div style="display:flex;gap:8px;margin-top:20px;">
+    <button class="btn btn-ghost" onclick="closeLotModal()" style="flex:0 0 auto;">Fermer</button>
+    ${lot ? `<button class="btn btn-danger" onclick="deleteLot('${lot.id}')" style="flex:0 0 auto;margin-left:auto;"><span class="material-symbols-outlined" style="font-size:16px;">delete</span>Supprimer</button>` : ''}
+  </div>`;
+  $('#lotModalBody').innerHTML = body;
+}
+
+function setActiveTab(t) { activeTab = t; renderLotModal(); }
+
+function renderStepper(current, total) {
+  const steps = ['i', '1', '2', '3', '4', '5'];
+  const labels = ['Infos', 'Collecte', 'Incu', 'J7', 'J14', 'Éclosion'];
+  let html = '<div class="stepper">';
+  for (let i = 0; i < total; i++) {
+    const cls = i < current ? 'done' : i === current ? 'current' : '';
+    html += `<div class="step ${cls}"><div class="step-circle">${i < current ? '<span class="material-symbols-outlined" style="font-size:16px;">check</span>' : steps[i]}</div><div class="step-label">${labels[i]}</div></div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderTabInfo(lot) {
+  return renderStepper(0, 6) + `
+    <form id="formInfo" onsubmit="saveInfo(event)">
+      <div class="field-row">
+        <div class="field">
+          <label>N° de lot *</label>
+          <input type="text" name="lotNumber" required placeholder="Ex: L-2025-001" value="${escHtml(lot?.lotNumber || '')}" />
+        </div>
+        <div class="field">
+          <label>N° couveuse *</label>
+          <input type="text" name="incubator" required placeholder="Ex: C-1" value="${escHtml(lot?.incubator || 'C-1')}" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Race</label>
+          <input type="text" name="breed" placeholder="Ex: Isa Brown" value="${escHtml(lot?.breed || '')}" />
+        </div>
+        <div class="field">
+          <label>Origine / reproducteur</label>
+          <input type="text" name="origin" placeholder="Ex: Lot reproducteur A" value="${escHtml(lot?.origin || '')}" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Date de ponte du reproducteur</label>
+        <input type="date" name="breederLayDate" value="${lot?.breederLayDate || ''}" />
+      </div>
+      <div class="field">
+        <label>Objectif d'éclosion (%)</label>
+        <input type="number" name="targetRate" min="0" max="100" step="1" value="${lot?.targetRate ?? state.settings.targetRate ?? 85}" />
+      </div>
+      <div class="field">
+        <label>Notes / observations</label>
+        <textarea name="notes" placeholder="Observations diverses sur ce lot...">${escHtml(lot?.notes || '')}</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px;">
+        <span class="material-symbols-outlined">${lot ? 'save' : 'add'}</span>
+        ${lot ? 'Enregistrer' : 'Créer le lot'}
+      </button>
+    </form>
+  `;
+}
+
+function renderStageHeader(num, title, isValidated) {
+  return `
+    <div class="stage-header">
+      <div class="stage-title">
+        <span class="stage-num">${num}</span>
+        ${title}
+      </div>
+      ${isValidated ? `<div class="stage-validated"><span class="material-symbols-outlined" style="font-size:14px;">check_circle</span>Validé</div>` : ''}
+    </div>
+  `;
+}
+function renderModifyBtn(lot, stage) {
+  if (!lot) return '';
+  return `<button type="button" class="btn btn-outline btn-sm" onclick="unlockStage('${stage}')"><span class="material-symbols-outlined" style="font-size:14px;">edit</span>Modifier</button>`;
+}
+
+function renderTabCollection(lot) {
+  const isLocked = lot && lot.collectionValidated;
+  return renderStepper(1, 6) + `
+    <form id="formCollection" onsubmit="validateCollection(event)">
+      <div class="stage ${isLocked ? 'locked' : 'active'}">
+        ${renderStageHeader(1, 'Collecte des œufs', isLocked)}
+        <div class="field">
+          <label>Date de collecte *</label>
+          <input type="date" name="collectionDate" required value="${lot?.collectionDate || ''}" ${isLocked?'disabled':''} />
+        </div>
+        <div class="field">
+          <label>Quantité totale d'œufs *</label>
+          <input type="number" name="collectionQuantity" required min="1" value="${lot?.collectionQuantity || ''}" placeholder="Ex: 100" ${isLocked?'disabled':''} oninput="updateComputed()" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>🥚 Fissurés</label>
+            <input type="number" name="collectionCracked" min="0" value="${lot?.collectionCracked || 0}" placeholder="0" ${isLocked?'disabled':''} oninput="updateComputed()" />
+          </div>
+          <div class="field">
+            <label>✓ Bons</label>
+            <input type="number" value="${lot ? calcLot(lot).bonAIntroduire : ''}" placeholder="Auto" disabled />
+          </div>
+        </div>
+        <div class="computed-row">
+          <div class="computed"><div class="computed-label">Bon à introduire</div><div class="computed-value" id="comp-bonIntro">0</div></div>
+          <div class="computed"><div class="computed-label">% Fissurés</div><div class="computed-value" id="comp-crackedPct">0%</div></div>
+          <div class="computed"><div class="computed-label">Perte initiale</div><div class="computed-value" id="comp-initLoss">0</div></div>
+        </div>
+        ${isLocked ? renderModifyBtn(lot, 'collection') : `<button type="submit" class="btn btn-primary btn-block" style="margin-top:14px;"><span class="material-symbols-outlined">check</span>Valider et passer à l'incubation</button>`}
+      </div>
+    </form>
+  `;
+}
+
+function renderTabIncubation(lot) {
+  if (!lot || !lot.collectionValidated) return `<div class="empty"><div class="empty-icon"><span class="material-symbols-outlined">lock</span></div><div class="empty-title">Étape verrouillée</div><div class="empty-text">Validez d'abord la collecte</div></div>`;
+  const isLocked = lot.incubationValidated;
+  return renderStepper(2, 6) + `
+    <form id="formIncubation" onsubmit="validateIncubation(event)">
+      <div class="stage ${isLocked ? 'locked' : 'active'}">
+        ${renderStageHeader(2, 'Entrée en incubation', isLocked)}
+        <div class="field">
+          <label>Date d'entrée en incubation *</label>
+          <input type="date" name="incubationDate" required value="${lot.incubationDate || ''}" ${isLocked?'disabled':''} />
+        </div>
+        <div class="card" style="background:linear-gradient(135deg, rgba(33,150,243,0.15), rgba(0,212,184,0.1));border:1px solid rgba(33,150,243,0.3);text-align:center;padding:16px;">
+          <div style="font-size:32px;">🐣</div>
+          <div style="font-size:13px;color:var(--text-muted);margin:4px 0 2px;">Date d'éclosion prévue</div>
+          <div style="font-size:20px;font-weight:800;color:var(--primary-light);">${lot.incubationDate ? fmtDate(expectedHatchDate(lot)) : '—'}</div>
+        </div>
+        ${isLocked ? renderModifyBtn(lot, 'incubation') : `<button type="submit" class="btn btn-primary btn-block" style="margin-top:14px;"><span class="material-symbols-outlined">check</span>Valider et passer au mirage J7</button>`}
+      </div>
+    </form>
+  `;
+}
+
+function renderTabJ7(lot) {
+  if (!lot || !lot.incubationValidated) return `<div class="empty"><div class="empty-icon"><span class="material-symbols-outlined">lock</span></div><div class="empty-title">Étape verrouillée</div><div class="empty-text">Validez l'incubation</div></div>`;
+  const isLocked = lot.candling7Validated;
+  const c = calcLot(lot);
+  return renderStepper(3, 6) + `
+    <form id="formJ7" onsubmit="validateJ7(event)">
+      <div class="stage ${isLocked ? 'locked' : 'active'}">
+        ${renderStageHeader(3, 'Mirage du 7ème jour', isLocked)}
+        <div class="field">
+          <label>Date du mirage *</label>
+          <input type="date" name="candling7Date" required value="${lot.candling7Date || ''}" ${isLocked?'disabled':''} />
+        </div>
+        <div class="field-row-3">
+          <div class="field">
+            <label>🥚 Clairs</label>
+            <input type="number" name="candling7Clear" min="0" value="${lot.candling7Clear || 0}" ${isLocked?'disabled':''} oninput="updateJ7Computed()" />
+          </div>
+          <div class="field">
+            <label>☠️ Mortalités</label>
+            <input type="number" name="candling7Mortality" min="0" value="${lot.candling7Mortality || 0}" ${isLocked?'disabled':''} oninput="updateJ7Computed()" />
+          </div>
+          <div class="field">
+            <label>✓ Fécondés</label>
+            <input type="number" value="${c.j7Fertilized}" disabled />
+          </div>
+        </div>
+        <div class="field-hint">Max: ${c.bonAIntroduire} (œufs introduits)</div>
+        <div class="computed-row">
+          <div class="computed"><div class="computed-label">Fécondés</div><div class="computed-value" id="comp-j7fert">${c.j7Fertilized}</div></div>
+          <div class="computed"><div class="computed-label">Taux fécond.</div><div class="computed-value" id="comp-j7fertRate">${c.bonAIntroduire ? Math.round(c.j7Fertilized/c.bonAIntroduire*100) : 0}%</div></div>
+          <div class="computed"><div class="computed-label">Perte J7</div><div class="computed-value" id="comp-j7loss">${(+lot.candling7Clear||0)+(+lot.candling7Mortality||0)}</div></div>
+        </div>
+        ${isLocked ? renderModifyBtn(lot, 'candling7') : `<button type="submit" class="btn btn-primary btn-block" style="margin-top:14px;"><span class="material-symbols-outlined">check</span>Valider et passer au mirage J14</button>`}
+      </div>
+    </form>
+  `;
+}
+
+function renderTabJ14(lot) {
+  if (!lot || !lot.candling7Validated) return `<div class="empty"><div class="empty-icon"><span class="material-symbols-outlined">lock</span></div><div class="empty-title">Étape verrouillée</div><div class="empty-text">Validez le mirage J7</div></div>`;
+  const isLocked = lot.candling14Validated;
+  const c = calcLot(lot);
+  return renderStepper(4, 6) + `
+    <form id="formJ14" onsubmit="validateJ14(event)">
+      <div class="stage ${isLocked ? 'locked' : 'active'}">
+        ${renderStageHeader(4, 'Mirage du 14ème jour', isLocked)}
+        <div class="field">
+          <label>Date du mirage *</label>
+          <input type="date" name="candling14Date" required value="${lot.candling14Date || ''}" ${isLocked?'disabled':''} />
+        </div>
+        <div class="field-row-3">
+          <div class="field">
+            <label>🦠 Contaminés</label>
+            <input type="number" name="candling14Contaminated" min="0" value="${lot.candling14Contaminated || 0}" ${isLocked?'disabled':''} oninput="updateJ14Computed()" />
+          </div>
+          <div class="field">
+            <label>☠️ Mortalités</label>
+            <input type="number" name="candling14Mortality" min="0" value="${lot.candling14Mortality || 0}" ${isLocked?'disabled':''} oninput="updateJ14Computed()" />
+          </div>
+          <div class="field">
+            <label>✓ Bons</label>
+            <input type="number" value="${c.j14Bons}" disabled />
+          </div>
+        </div>
+        <div class="field-hint">Max: ${c.j7Fertilized} (fécondés J7)</div>
+        ${isLocked ? renderModifyBtn(lot, 'candling14') : `<button type="submit" class="btn btn-primary btn-block" style="margin-top:14px;"><span class="material-symbols-outlined">check</span>Valider et passer à l'éclosion</button>`}
+      </div>
+    </form>
+  `;
+}
+
+function renderTabHatching(lot) {
+  if (!lot || !lot.candling14Validated) return `<div class="empty"><div class="empty-icon"><span class="material-symbols-outlined">lock</span></div><div class="empty-title">Étape verrouillée</div><div class="empty-text">Validez le mirage J14</div></div>`;
+  const isLocked = lot.hatchingValidated;
+  const c = calcLot(lot);
+  return renderStepper(5, 6) + `
+    <form id="formHatching" onsubmit="validateHatching(event)">
+      <div class="stage ${isLocked ? 'locked' : 'active'}">
+        ${renderStageHeader(5, 'Éclosion', isLocked)}
+        <div class="field">
+          <label>Date d'éclosion *</label>
+          <input type="date" name="hatchingDate" required value="${lot.hatchingDate || ''}" ${isLocked?'disabled':''} />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>⚠️ Malformations</label>
+            <input type="number" name="hatchingMalformation" min="0" value="${lot.hatchingMalformation || 0}" ${isLocked?'disabled':''} oninput="updateHatchComputed()" />
+          </div>
+          <div class="field">
+            <label>☠️ Morts nés</label>
+            <input type="number" name="hatchingDead" min="0" value="${lot.hatchingDead || 0}" ${isLocked?'disabled':''} oninput="updateHatchComputed()" />
+          </div>
+        </div>
+        <div class="field-hint">Max: ${c.j14Bons} (bons J14)</div>
+        <div class="computed-row">
+          <div class="computed"><div class="computed-label">Poussins sains</div><div class="computed-value" id="comp-hatchOK" style="color:var(--secondary);">${c.poussinsSains}</div></div>
+          <div class="computed"><div class="computed-label">Taux éclosion</div><div class="computed-value" id="comp-hatchRate">${c.hatchRate.toFixed(1)}%</div></div>
+          <div class="computed"><div class="computed-label">vs Objectif</div><div class="computed-value" id="comp-vsTarget">${(c.hatchRate >= (lot.targetRate||85) ? '✅' : c.hatchRate >= (lot.targetRate||85) - 10 ? '⚠️' : '❌')}</div></div>
+        </div>
+        ${isLocked ? renderModifyBtn(lot, 'hatching') : `<button type="submit" class="btn btn-secondary btn-block" style="margin-top:14px;"><span class="material-symbols-outlined">check</span>Valider l'éclosion</button>`}
+      </div>
+    </form>
+  `;
+}
+
+function renderTabRecap(lot) {
+  if (!lot || !lot.hatchingValidated) return `<div class="empty"><div class="empty-icon"><span class="material-symbols-outlined">monitoring</span></div><div class="empty-title">Récap indisponible</div><div class="empty-text">Complétez l'éclosion</div></div>`;
+  const c = calcLot(lot);
+  const target = lot.targetRate || state.settings.targetRate || 85;
+  const obj = c.hatchRate >= target ? { icon: '✅', text: 'Objectif atteint', color: 'var(--success)' }
+            : c.hatchRate >= target - 10 ? { icon: '⚠️', text: "Proche de l'objectif", color: 'var(--warning)' }
+            : { icon: '❌', text: 'Sous objectif', color: 'var(--danger)' };
+  return renderStepper(6, 6) + `
+    <div class="card" style="text-align:center;background:linear-gradient(135deg, rgba(0,212,184,0.15), rgba(33,150,243,0.05));border:1px solid rgba(0,212,184,0.3);padding:24px;">
+      <div style="font-size:48px;">🐣</div>
+      <div style="font-size:42px;font-weight:800;color:var(--secondary);">${c.poussinsSains}</div>
+      <div style="color:var(--text-muted);font-size:13px;">poussins sains obtenus</div>
+      <div style="margin-top:10px;font-weight:700;color:${obj.color};">${obj.icon} ${obj.text}</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="margin-bottom:14px;"><span class="material-symbols-outlined">waterfall_chart</span>Cascade des pertes</div>
+      ${renderLossBar('Collecte', lot.collectionQuantity, c.bonAIntroduire, 0, 0, '#FF9800')}
+      ${renderLossBar('Bon à introduire', c.bonAIntroduire, c.j7Fertilized, (+lot.candling7Clear||0), (+lot.candling7Mortality||0), '#2196F3')}
+      ${renderLossBar('Fécondés J7', c.j7Fertilized, c.j14Bons, (+lot.candling14Contaminated||0), (+lot.candling14Mortality||0), '#00D4B8')}
+      ${renderLossBar('Bons J14', c.j14Bons, c.poussinsSains, (+lot.hatchingMalformation||0), (+lot.hatchingDead||0), '#32D74B')}
+    </div>
+    ${lot.notes ? `<div class="card"><div class="card-title" style="margin-bottom:8px;"><span class="material-symbols-outlined">sticky_note_2</span>Notes</div><div style="white-space:pre-wrap;color:var(--text-muted);">${escHtml(lot.notes)}</div></div>` : ''}
+  `;
+}
+
+function renderLossBar(title, from, to, loss1, loss2, color) {
+  const loss = from - to;
+  const lossPct = from ? (loss / from * 100) : 0;
+  return `
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-weight:600;font-size:13px;">${title}</div>
+        <div style="font-weight:700;font-size:13px;color:${color};">${from} → ${to}</div>
+      </div>
+      <div style="height:8px;background:var(--bg-2);border-radius:4px;overflow:hidden;display:flex;">
+        <div style="width:${100-lossPct}%;background:${color};"></div>
+        ${lossPct > 0 ? `<div style="width:${lossPct}%;background:var(--danger);"></div>` : ''}
+      </div>
+      ${loss > 0 ? `<div style="font-size:11px;color:var(--text-soft);margin-top:3px;">−${loss} œufs${loss1&&loss2 ? ` (${loss1} + ${loss2})` : ''}</div>` : ''}
+    </div>
+  `;
+}
+
+/* Lot form actions */
+function getFormData(form) { const data = {}; new FormData(form).forEach((v, k) => { data[k] = v; }); return data; }
+
+function saveInfo(e) {
+  e.preventDefault();
+  const f = e.target;
+  const data = getFormData(f);
+  let lot = getCurrentLot();
+  if (!lot) {
+    lot = { id: uid(), userId: state.currentUserId, createdAt: Date.now(), collectionValidated: false, incubationValidated: false, candling7Validated: false, candling14Validated: false, hatchingValidated: false, costs: { eggs: 0, energy: 0, feed: 0, labor: 0 } };
+    state.lots.push(lot);
+  }
+  Object.assign(lot, { lotNumber: data.lotNumber, incubator: data.incubator, breed: data.breed, origin: data.origin, breederLayDate: data.breederLayDate, targetRate: +data.targetRate || 85, notes: data.notes });
+  saveState();
+  currentLotId = lot.id;
+  modalMode = 'edit';
+  activeTab = 'collection';
+  toast('Informations enregistrées', 'success');
+  renderLotModal();
+  refreshAll();
+}
+
+function validateCollection(e) {
+  e.preventDefault();
+  const f = e.target;
+  const data = getFormData(f);
+  const lot = getCurrentLot();
+  if (!lot) return;
+  const qty = +data.collectionQuantity;
+  const cracked = +data.collectionCracked || 0;
+  if (qty <= 0) return toast('Quantité invalide', 'error');
+  if (cracked > qty) return toast('Fissurés > quantité', 'error');
+  Object.assign(lot, { collectionDate: data.collectionDate, collectionQuantity: qty, collectionCracked: cracked, collectionValidated: true });
+  saveState();
+  toast('Collecte validée ✓', 'success');
+  activeTab = 'incubation';
+  renderLotModal();
+  refreshAll();
+}
+
+function validateIncubation(e) {
+  e.preventDefault();
+  const f = e.target;
+  const data = getFormData(f);
+  const lot = getCurrentLot();
+  if (!lot) return;
+  const inc = parseDate(data.incubationDate);
+  const col = parseDate(lot.collectionDate);
+  if (inc && col && inc < col) return toast("Date d'incubation antérieure à la collecte", 'error');
+  Object.assign(lot, { incubationDate: data.incubationDate, incubationValidated: true });
+  saveState();
+  toast('Incubation validée ✓', 'success');
+  activeTab = 'j7';
+  renderLotModal();
+  refreshAll();
+}
+
+function validateJ7(e) {
+  e.preventDefault();
+  const f = e.target;
+  const data = getFormData(f);
+  const lot = getCurrentLot();
+  if (!lot) return;
+  const clear = +data.candling7Clear || 0;
+  const mort = +data.candling7Mortality || 0;
+  const c = calcLot(lot);
+  if (clear + mort > c.bonAIntroduire) return toast('Clairs + mortalités > introduits', 'error');
+  Object.assign(lot, { candling7Date: data.candling7Date, candling7Clear: clear, candling7Mortality: mort, candling7Validated: true });
+  saveState();
+  toast('Mirage J7 validé ✓', 'success');
+  if (c.bonAIntroduire && (mort / c.bonAIntroduire) > 0.20) toast(`⚠️ Mortalité J7 élevée : ${(mort/c.bonAIntroduire*100).toFixed(0)}%`, 'warning');
+  activeTab = 'j14';
+  renderLotModal();
+  refreshAll();
+}
+
+function validateJ14(e) {
+  e.preventDefault();
+  const f = e.target;
+  const data = getFormData(f);
+  const lot = getCurrentLot();
+  if (!lot) return;
+  const cont = +data.candling14Contaminated || 0;
+  const mort = +data.candling14Mortality || 0;
+  const c = calcLot(lot);
+  if (cont + mort > c.j7Fertilized) return toast('Contaminés + mortalités > fécondés', 'error');
+  Object.assign(lot, { candling14Date: data.candling14Date, candling14Contaminated: cont, candling14Mortality: mort, candling14Validated: true });
+  saveState();
+  toast('Mirage J14 validé ✓', 'success');
+  activeTab = 'hatching';
+  renderLotModal();
+  refreshAll();
+}
+
+function validateHatching(e) {
+  e.preventDefault();
+  const f = e.target;
+  const data = getFormData(f);
+  const lot = getCurrentLot();
+  if (!lot) return;
+  const mal = +data.hatchingMalformation || 0;
+  const dead = +data.hatchingDead || 0;
+  const c = calcLot(lot);
+  if (mal + dead > c.j14Bons) return toast('Malformations + morts > bons J14', 'error');
+  Object.assign(lot, { hatchingDate: data.hatchingDate, hatchingMalformation: mal, hatchingDead: dead, hatchingValidated: true });
+  saveState();
+  toast(`Éclosion validée : ${c.poussinsSains} poussins 🐣`, 'success');
+  activeTab = 'recap';
+  renderLotModal();
+  refreshAll();
+}
+
+function unlockStage(stage) {
+  showConfirm('Modifier cette étape', 'Vous pourrez modifier les valeurs.', () => {
+    const lot = getCurrentLot();
+    if (!lot) return;
+    lot[stage + 'Validated'] = false;
+    saveState();
+    toast('Étape déverrouillée', 'warning');
+    renderLotModal();
+    refreshAll();
+  });
+}
+
+function deleteLot(id) {
+  showConfirm('Supprimer ce lot', 'Action irréversible.', () => {
+    state.lots = state.lots.filter(l => l.id !== id);
+    state.tempLogs = state.tempLogs.filter(t => t.lotId !== id);
+    saveState();
+    toast('Lot supprimé', 'success');
+    closeLotModal();
+    refreshAll();
+  });
+}
+
+/* Live computed */
+function updateComputed() {
+  const f = $('#formCollection'); if (!f) return;
+  const qty = +f.collectionQuantity.value || 0;
+  const cracked = +f.collectionCracked.value || 0;
+  const bon = Math.max(0, qty - cracked);
+  const pct = qty ? (cracked / qty * 100).toFixed(1) : 0;
+  const c = $('#comp-bonIntro'); if (c) c.textContent = bon;
+  const c2 = $('#comp-crackedPct'); if (c2) c2.textContent = pct + '%';
+  const c3 = $('#comp-initLoss'); if (c3) c3.textContent = cracked;
+}
+function updateJ7Computed() {
+  const f = $('#formJ7'); if (!f) return;
+  const lot = getCurrentLot(); if (!lot) return;
+  const clear = +f.candling7Clear.value || 0;
+  const mort = +f.candling7Mortality.value || 0;
+  const temp = { ...lot, candling7Clear: clear, candling7Mortality: mort };
+  const c = calcLot(temp);
+  const fert = $('#comp-j7fert'); if (fert) fert.textContent = c.j7Fertilized;
+  const fertRate = $('#comp-j7fertRate'); if (fertRate) fertRate.textContent = c.bonAIntroduire ? Math.round(c.j7Fertilized/c.bonAIntroduire*100) + '%' : '0%';
+  const loss = $('#comp-j7loss'); if (loss) loss.textContent = clear + mort;
+}
+function updateJ14Computed() {
+  const f = $('#formJ14'); if (!f) return;
+  const lot = getCurrentLot(); if (!lot) return;
+  const cont = +f.candling14Contaminated.value || 0;
+  const mort = +f.candling14Mortality.value || 0;
+  const temp = { ...lot, candling14Contaminated: cont, candling14Mortality: mort };
+  const c = calcLot(temp);
+  const bons = $('#comp-j14bons'); if (bons) bons.textContent = c.j14Bons;
+  const ret = $('#comp-j14ret'); if (ret) ret.textContent = c.j7Fertilized ? Math.round(c.j14Bons/c.j7Fertilized*100) + '%' : '0%';
+  const loss = $('#comp-j14loss'); if (loss) loss.textContent = cont + mort;
+}
+function updateHatchComputed() {
+  const f = $('#formHatching'); if (!f) return;
+  const lot = getCurrentLot(); if (!lot) return;
+  const mal = +f.hatchingMalformation.value || 0;
+  const dead = +f.hatchingDead.value || 0;
+  const temp = { ...lot, hatchingMalformation: mal, hatchingDead: dead, targetRate: lot.targetRate };
+  const c = calcLot(temp);
+  const ok = $('#comp-hatchOK'); if (ok) ok.textContent = c.poussinsSains;
+  const rate = $('#comp-hatchRate'); if (rate) rate.textContent = c.hatchRate.toFixed(1) + '%';
+  const vt = $('#comp-vsTarget'); if (vt) {
+    const target = lot.targetRate || 85;
+    vt.textContent = c.hatchRate >= target ? '✅' : c.hatchRate >= target - 10 ? '⚠️' : '❌';
+  }
+}
+
+/* ================================================================
+   CALENDAR
+================================================================ */
+let calMonth = new Date().getMonth();
+let calYear = new Date().getFullYear();
+
+function renderCalendarContent() {
+  return `
+    <div class="section-title"><span class="section-title-text"><span class="material-symbols-outlined">calendar_month</span>Calendrier</span></div>
+    <div class="card">
+      <div class="calendar" id="calendarContainer"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title"><span class="material-symbols-outlined">list</span>Lots de ce mois</div></div>
+      <div id="calendarLotsList"></div>
+    </div>
+  `;
+}
+
+function renderCalendar() {
+  const t = new Date();
+  const first = new Date(calYear, calMonth, 1);
+  const last = new Date(calYear, calMonth + 1, 0);
+  const startDay = first.getDay();
+  const days = last.getDate();
+  const monthName = first.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  const lots = userLots();
+  const events = {};
+  lots.forEach(lot => {
+    const addEv = (d, type) => { if (!d) return; const k = d.slice(0,10); if (!events[k]) events[k] = []; events[k].push({ lot, type }); };
+    if (lot.collectionDate) addEv(lot.collectionDate, 'collection');
+    if (lot.incubationDate) addEv(lot.incubationDate, 'incubation');
+    if (lot.candling7Date) addEv(lot.candling7Date, 'j7');
+    if (lot.candling14Date) addEv(lot.candling14Date, 'j14');
+    if (lot.hatchingDate) addEv(lot.hatchingDate, 'hatch');
+    const pred = expectedHatchDate(lot);
+    if (pred && !lot.hatchingDate) { const k = pred.toISOString().slice(0,10); if (!events[k]) events[k] = []; events[k].push({ lot, type: 'predicted' }); }
+  });
+  let html = `
+    <div class="calendar-header">
+      <button class="btn btn-ghost btn-sm btn-icon" onclick="changeCalMonth(-1)"><span class="material-symbols-outlined">chevron_left</span></button>
+      <div style="font-weight:700;text-transform:capitalize;">${monthName}</div>
+      <button class="btn btn-ghost btn-sm btn-icon" onclick="changeCalMonth(1)"><span class="material-symbols-outlined">chevron_right</span></button>
+    </div>
+    <div class="calendar-grid">
+      ${['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'].map(d => `<div class="cal-day-name">${d}</div>`).join('')}
+  `;
+  for (let i = 0; i < startDay; i++) html += `<div class="cal-day empty"></div>`;
+  for (let d = 1; d <= days; d++) {
+    const date = new Date(calYear, calMonth, d);
+    const key = date.toISOString().slice(0,10);
+    const isToday = date.toDateString() === t.toDateString();
+    const ev = events[key] || [];
+    const types = new Set(ev.map(e => e.type));
+    let cls = 'cal-day';
+    if (isToday) cls += ' today';
+    if (types.has('incubation') || types.has('collection')) cls += ' has-incubation';
+    if (types.has('j7')) cls += ' has-j7';
+    if (types.has('j14')) cls += ' has-j14';
+    if (types.has('hatch') || types.has('predicted')) cls += ' has-hatch';
+    html += `<div class="${cls}"><div class="cal-day-num">${d}</div>${ev.length > 0 ? `<div class="cal-day-marker"></div>` : ''}</div>`;
+  }
+  html += `</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(33,150,243,0.4);"></div>Incu/Collecte</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(255,152,0,0.4);"></div>J7</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(255,193,7,0.6);"></div>J14</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(0,212,184,0.4);"></div>Éclosion</div>
+    </div>
+  `;
+  const c = $('#calendarContainer');
+  if (c) c.innerHTML = html;
+
+  const monthLots = lots.filter(l => {
+    const dates = [l.collectionDate, l.incubationDate, l.candling7Date, l.candling14Date, l.hatchingDate];
+    return dates.some(d => { if (!d) return false; const dt = new Date(d); return dt.getMonth() === calMonth && dt.getFullYear() === calYear; });
+  });
+  const cl = $('#calendarLotsList');
+  if (cl) cl.innerHTML = monthLots.length === 0
+    ? '<div class="empty"><div class="empty-text">Aucun lot ce mois-ci</div></div>'
+    : monthLots.map(l => {
+        const stage = getStage(l);
+        return `<div class="list-item" onclick="openLotModal('${l.id}')" style="cursor:pointer;">
+          <div class="list-item-icon"><span class="material-symbols-outlined">${stage==='hatching'?'hatching':'egg'}</span></div>
+          <div class="list-item-content"><div class="list-item-title">Lot ${escHtml(l.lotNumber || l.id.slice(-4))}</div><div class="list-item-sub">${stageLabel(stage)} · ${fmtDate(l.collectionDate)}</div></div>
+          <span class="badge ${l.hatchingValidated?'badge-success':'badge-warning'}">${l.hatchingValidated?'Fait':'En cours'}</span>
+        </div>`;
+      }).join('');
+}
+
+function changeCalMonth(d) {
+  calMonth += d;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+/* ================================================================
+   TEMPERATURE / HUMIDITY
+================================================================ */
+function renderTemperatureContent() {
+  return `
+    <div class="section-title"><span class="section-title-text"><span class="material-symbols-outlined">thermostat</span>Température & Humidité</span></div>
+    <div class="card">
+      <div class="card-title" style="margin-bottom:14px;"><span class="material-symbols-outlined">add_circle</span>Nouveau relevé</div>
+      <form id="tempForm" onsubmit="addTempLog(event)">
+        <div class="field">
+          <label>Lot</label>
+          <select name="lotId" required></select>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Date</label>
+            <input type="date" name="date" required />
+          </div>
+          <div class="field">
+            <label>Température (°C)</label>
+            <input type="number" step="0.1" name="temperature" required placeholder="37.8" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Humidité (%)</label>
+          <input type="number" step="1" name="humidity" required placeholder="55" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block"><span class="material-symbols-outlined">save</span>Enregistrer</button>
+      </form>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title" style="margin-bottom:14px;"><span class="material-symbols-outlined">monitoring</span>Évolution T° / Humidité</div>
+      <div class="chart-wrap tall"><canvas id="chartTemp"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="margin-bottom:14px;"><span class="material-symbols-outlined">history</span>Historique</div>
+      <div id="tempHistory"></div>
+    </div>
+  `;
+}
+
+function populateTempLotSelect() {
+  const lots = userLots().filter(l => l.collectionValidated);
+  const sel = $('#tempForm select[name="lotId"]');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— Choisir un lot —</option>' + lots.map(l => `<option value="${l.id}">Lot ${escHtml(l.lotNumber || l.id.slice(-4))} · ${escHtml(l.incubator || 'C-1')}</option>`).join('');
+  const dateInput = $('#tempForm input[name="date"]');
+  if (dateInput && !dateInput.value) dateInput.value = new Date().toISOString().slice(0,10);
+}
+
+function addTempLog(e) {
+  e.preventDefault();
+  const f = e.target;
+  const data = getFormData(f);
+  const log = { id: uid(), userId: state.currentUserId, lotId: data.lotId, date: data.date, temperature: +data.temperature, humidity: +data.humidity, createdAt: Date.now() };
+  state.tempLogs.push(log);
+  saveState();
+  toast('Relevé enregistré', 'success');
+  f.temperature.value = ''; f.humidity.value = '';
+  renderTempHistory();
+  renderTempChart();
+}
+
+function renderTempHistory() {
+  const logs = userTempLogs().sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 30);
+  const c = $('#tempHistory');
+  if (!c) return;
+  if (logs.length === 0) { c.innerHTML = '<div class="empty"><div class="empty-text">Aucun relevé</div></div>'; return; }
+  c.innerHTML = `<table class="compact-table">
+    <thead><tr><th>Date</th><th>Lot</th><th>T°</th><th>Hum.</th><th></th></tr></thead>
+    <tbody>${logs.map(l => {
+      const lot = state.lots.find(x => x.id === l.lotId);
+      const tOk = l.temperature >= 37 && l.temperature <= 38.5;
+      const hOk = l.humidity >= 50 && l.humidity <= 70;
+      return `<tr><td>${fmtDate(l.date)}</td><td>${escHtml(lot?.lotNumber || '?')}</td><td><strong>${l.temperature}°C</strong> ${tOk?'<span style="color:var(--success);">✓</span>':'<span style="color:var(--warning);">⚠️</span>'}</td><td><strong>${l.humidity}%</strong> ${hOk?'<span style="color:var(--success);">✓</span>':'<span style="color:var(--warning);">⚠️</span>'}</td><td><button class="btn btn-ghost btn-sm btn-icon" onclick="deleteTempLog('${l.id}')"><span class="material-symbols-outlined" style="font-size:16px;">delete</span></button></td></tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+function deleteTempLog(id) {
+  showConfirm('Supprimer ce relevé ?', '', () => {
+    state.tempLogs = state.tempLogs.filter(t => t.id !== id);
+    saveState();
+    renderTempHistory();
+    renderTempChart();
+  });
+}
+
+function renderTempChart() {
+  const logs = userTempLogs().sort((a,b) => new Date(a.date) - new Date(b.date));
+  const ctx = document.getElementById('chartTemp');
+  if (!ctx) return;
+  if (logs.length === 0) { ctx.parentElement.innerHTML = '<div class="empty"><div class="empty-icon"><span class="material-symbols-outlined">thermostat</span></div><div class="empty-text">Aucun relevé</div></div>'; return; }
+  if (charts.temp) charts.temp.destroy();
+  charts.temp = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: logs.map(l => fmtDate(l.date)),
+      datasets: [
+        { label: 'Température (°C)', data: logs.map(l => l.temperature), borderColor: '#FF9800', backgroundColor: 'rgba(255,152,0,0.15)', yAxisID: 'y1', tension: 0.3 },
+        { label: 'Humidité (%)', data: logs.map(l => l.humidity), borderColor: '#00D4B8', backgroundColor: 'rgba(0,212,184,0.1)', yAxisID: 'y2', tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        y1: { type: 'linear', position: 'left', title: { display: true, text: '°C' }, min: 35, max: 40, grid: { color: 'rgba(199,210,227,0.05)' } },
+        y2: { type: 'linear', position: 'right', title: { display: true, text: '%' }, min: 0, max: 100, grid: { drawOnChartArea: false } }
+      }
+    }
+  });
+}
+
+/* ================================================================
+   COSTS
+================================================================ */
+function renderCostsContent() {
+  const lots = userLots();
+  if (lots.length === 0) {
+    return `<div class="section-title"><span class="section-title-text"><span class="material-symbols-outlined">payments</span>Coûts</span></div>
+    <div class="card"><div class="empty"><div class="empty-icon"><span class="material-symbols-outlined">inbox</span></div><div class="empty-text">Aucun lot</div></div></div>`;
+  }
+  return `
+    <div class="section-title"><span class="section-title-text"><span class="material-symbols-outlined">payments</span>Coûts de production</span></div>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:14px;">Coût par poussin calculé automatiquement</p>
+    <div id="costsLotsList"></div>
+  `;
+}
+
+function renderCosts() {
+  const lots = userLots();
+  const c = $('#costsLotsList');
+  if (!c) return;
+  c.innerHTML = lots.map(lot => {
+    const cl = calcLot(lot);
+    const costs = lot.costs || { eggs: 0, energy: 0, feed: 0, labor: 0 };
+    const total = (+costs.eggs||0) + (+costs.energy||0) + (+costs.feed||0) + (+costs.labor||0);
+    const costPerChick = cl.poussinsSains > 0 ? (total / cl.poussinsSains) : 0;
+    return `<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div style="font-weight:700;">Lot ${escHtml(lot.lotNumber || lot.id.slice(-4))}</div>
+        <span class="badge ${lot.hatchingValidated?'badge-success':'badge-neutral'}">${cl.poussinsSains} poussins</span>
+      </div>
+      <form onsubmit="saveCosts(event, '${lot.id}')">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="field"><label>🥚 Œufs</label><input type="number" name="eggs" min="0" value="${costs.eggs||0}" /></div>
+          <div class="field"><label>⚡ Énergie</label><input type="number" name="energy" min="0" value="${costs.energy||0}" /></div>
+          <div class="field"><label>🌾 Aliment</label><input type="number" name="feed" min="0" value="${costs.feed||0}" /></div>
+          <div class="field"><label>👷 Main d'œuvre</label><input type="number" name="labor" min="0" value="${costs.labor||0}" /></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding:12px;background:var(--bg-2);border-radius:10px;">
+          <div><div style="font-size:12px;color:var(--text-muted);">Coût total · / poussin</div><div style="font-size:14px;font-weight:700;">${fmtNumber(total)} → <span style="color:var(--primary-light);">${fmtNumber(costPerChick,0)}</span></div></div>
+          <button type="submit" class="btn btn-primary btn-sm"><span class="material-symbols-outlined" style="font-size:16px;">save</span>Enregistrer</button>
+        </div>
+      </form>
+    </div>`;
+  }).join('');
+}
+
+function saveCosts(e, lotId) {
+  e.preventDefault();
+  const f = e.target;
+  const data = getFormData(f);
+  const lot = state.lots.find(l => l.id === lotId);
+  if (!lot) return;
+  lot.costs = { eggs: +data.eggs||0, energy: +data.energy||0, feed: +data.feed||0, labor: +data.labor||0 };
+  saveState();
+  toast('Coûts enregistrés', 'success');
+  renderCosts();
+}
+
+/* ================================================================
+   CLIENTS
+================================================================ */
+function renderClientsContent() {
+  return `
+    <div class="section-title"><span class="section-title-text"><span class="material-symbols-outlined">group</span>Clients & commandes</span></div>
+    <div class="card">
+      <div class="card-title" style="margin-bottom:14px;"><span class="material-symbols-outlined">person_add</span>Nouveau client</div>
+      <form id="clientForm" onsubmit="addClient(event)">
+        <div class="field-row">
+          <div class="field"><label>Nom</label><input type="text" name="name" required placeholder="Ex: Mme Diallo" /></div>
+          <div class="field"><label>Contact</label><input type="tel" name="contact" required placeholder="+221..." /></div>
+        </div>
+        <div class="field-row-3">
+          <div class="field"><label>Nb poussins</label><input type="number" name="chicksOrdered" required min="1" placeholder="10" /></div>
+          <div class="field"><label>Prix / poussin</label><input type="number" name="pricePerChick" required min="0" placeholder="1500" /></div>
+          <div class="field"><label>Statut</label><select name="status" required><option value="reserved">Réservé</option><option value="paid">Payé</option><option value="delivered">Livré</option></select></div>
+        </div>
+        <div class="field"><label>Lot (optionnel)</label><select name="lotId"><option value="">— Aucun —</option></select></div>
+        <button type="submit" class="btn btn-primary btn-block"><span class="material-symbols-outlined">add</span>Ajouter</button>
+      </form>
+    </div>
+    <div class="card">
+      <div class="card-title" style="margin-bottom:14px;"><span class="material-symbols-outlined">list</span>Liste</div>
+      <div id="clientsList"></div>
+    </div>
+  `;
+}
+
+function populateClientLotSelect() {
+  const lots = userLots();
+  const sel = $('#clientForm select[name="lotId"]');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— Aucun —</option>' + lots.map(l => `<option value="${l.id}">Lot ${escHtml(l.lotNumber || l.id.slice(-4))}</option>`).join('');
+}
+
+function addClient(e) {
+  e.preventDefault();
+  const f = e.target;
+  const data = getFormData(f);
+  const client = { id: uid(), userId: state.currentUserId, name: data.name, contact: data.contact, chicksOrdered: +data.chicksOrdered, pricePerChick: +data.pricePerChick, status: data.status, lotId: data.lotId || null, totalAmount: (+data.chicksOrdered) * (+data.pricePerChick), createdAt: Date.now() };
+  state.clients.push(client);
+  saveState();
+  toast('Client ajouté', 'success');
+  f.reset();
+  renderClients();
+}
+
+function renderClients() {
+  const clients = userClients().sort((a,b) => b.createdAt - a.createdAt);
+  const c = $('#clientsList');
+  if (!c) return;
+
+  // Totaux calculés à partir de TOUS les clients (même si la liste est vide)
+  const totals = { reserved: 0, paid: 0, delivered: 0 };
+  const chicks = { reserved: 0, paid: 0, delivered: 0 };
+  clients.forEach(cl => { totals[cl.status] += cl.totalAmount; chicks[cl.status] += cl.chicksOrdered; });
+
+  const pendingAmount = totals.reserved + totals.paid;
+  const pendingChicks = chicks.reserved + chicks.paid;
+  const finalizedAmount = totals.delivered;
+  const finalizedChicks = chicks.delivered;
+
+  // Les cartes de synthèse sont toujours affichées, indépendamment de la liste
+  const summaryCards = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+    <div class="card" style="margin:0;text-align:center;background:rgba(255,193,7,0.08);">
+      <div style="font-size:11px;color:var(--text-soft);text-transform:uppercase;font-weight:700;">Ventes en attente</div>
+      <div style="font-size:22px;font-weight:800;color:var(--warning);">${fmtNumber(pendingAmount)} F</div>
+      <div style="font-size:11px;color:var(--text-muted);">${pendingChicks} poussins</div>
+    </div>
+    <div class="card" style="margin:0;text-align:center;background:rgba(50,215,75,0.08);">
+      <div style="font-size:11px;color:var(--text-soft);text-transform:uppercase;font-weight:700;">Ventes finalisées</div>
+      <div style="font-size:22px;font-weight:800;color:var(--success);">${fmtNumber(finalizedAmount)} F</div>
+      <div style="font-size:11px;color:var(--text-muted);">${finalizedChicks} poussins</div>
+    </div>
+  </div>`;
+
+  if (clients.length === 0) {
+    c.innerHTML = summaryCards + '<div class="empty"><div class="empty-icon"><span class="material-symbols-outlined">inbox</span></div><div class="empty-text">Aucun client</div></div>';
+    return;
+  }
+
+  c.innerHTML = summaryCards + clients.map(cl => {
+    const lot = cl.lotId ? state.lots.find(l => l.id === cl.lotId) : null;
+    const statusBadge = cl.status === 'delivered' ? 'badge-success' : cl.status === 'paid' ? 'badge-info' : 'badge-warning';
+    const statusLabel = cl.status === 'delivered' ? 'Livré' : cl.status === 'paid' ? 'Payé' : 'Réservé';
+    return `<div class="list-item">
+      <div class="list-item-icon"><span class="material-symbols-outlined">person</span></div>
+      <div class="list-item-content"><div class="list-item-title">${escHtml(cl.name)}</div><div class="list-item-sub">${cl.chicksOrdered} poussins · ${fmtNumber(cl.totalAmount)} F${lot ? ` · Lot ${escHtml(lot.lotNumber || lot.id.slice(-4))}` : ''}</div><div class="list-item-sub">${escHtml(cl.contact)}</div></div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        <span class="badge ${statusBadge}">${statusLabel}</span>
+        <select onchange="updateClientStatus('${cl.id}', this.value)" style="font-size:10px;padding:3px 6px;border-radius:6px;border:1px solid var(--border-strong);background:var(--bg-2);color:var(--text);">
+          <option value="reserved" ${cl.status==='reserved'?'selected':''}>Réservé</option>
+          <option value="paid" ${cl.status==='paid'?'selected':''}>Payé</option>
+          <option value="delivered" ${cl.status==='delivered'?'selected':''}>Livré</option>
+        </select>
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="deleteClient('${cl.id}')" style="padding:2px 6px;"><span class="material-symbols-outlined" style="font-size:14px;">delete</span></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateClientStatus(id, status) {
+  const cl = state.clients.find(x => x.id === id);
+  if (!cl) return;
+  cl.status = status;
+  saveState();
+  renderClients();
+  toast('Statut mis à jour', 'success');
+}
+
+function deleteClient(id) {
+  showConfirm('Supprimer ce client ?', '', () => {
+    state.clients = state.clients.filter(c => c.id !== id);
+    saveState();
+    renderClients();
+  });
+}
+
+/* ================================================================
+   HELP / GUIDE
+================================================================ */
+const HATCHING_GUIDE = [
+  { day: 'J0', title: 'Mise en incubation', desc: 'Placez les œufs pointe en bas. Température 37.8°C, humidité 55-60%. Démarrez le retournement.', tag: 'Démarrage' },
+  { day: 'J7', title: '1er Mirage 🔍', desc: 'Retirez les œufs clairs (non fécondés) et les mortalités précoces.', tag: 'Mirage J7', cls: 'j7' },
+  { day: 'J14', title: '2ème Mirage 🔍', desc: 'Vérifiez la croissance. Retirez les œufs contaminés et morts. Chambre à air ~1/3.', tag: 'Mirage J14', cls: 'j14' },
+  { day: 'J19', title: 'Arrêt du retournement', desc: 'Arrêtez le retournement. Augmentez l\'humidité à 65-70%.', tag: 'Stop retournement', cls: 'j19' },
+  { day: 'J20', title: 'Préparation éclosion', desc: 'Humidité 70-75%. N\'ouvrez plus la couveuse. Préparez la nurserie.', tag: 'Préparation' },
+  { day: 'J21', title: 'Éclosion 🐣', desc: 'Les poussins percent la coquille (18-24h). Laissez sécher 24h avant transfert.', tag: 'Éclosion' }
+];
+
+function renderHelpContent() {
+  return `
+    <div class="section-title"><span class="section-title-text"><span class="material-symbols-outlined">menu_book</span>Guide de couvaison</span></div>
+    <div class="card">
+      <div class="card-title" style="margin-bottom:14px;"><span class="material-symbols-outlined">schedule</span>Calendrier J0 → J21</div>
+      <div>${HATCHING_GUIDE.map(d => `<div class="help-day">
+        <div class="help-day-num ${d.cls||''}">${d.day}</div>
+        <div><div class="help-day-title">${d.title}</div><div class="help-day-desc">${d.desc}</div><span class="help-day-tag">${d.tag}</span></div>
+      </div>`).join('')}</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="margin-bottom:14px;"><span class="material-symbols-outlined">settings</span>Paramètres</div>
+      <div class="settings-row">
+        <div><div class="settings-row-title">Objectif d'éclosion</div><div class="settings-row-sub">Seuil pour les indicateurs</div></div>
+        <input type="number" id="targetRate" min="0" max="100" value="${state.settings.targetRate||85}" style="width:80px;padding:8px;border:1px solid var(--border-strong);border-radius:8px;background:var(--bg-2);color:var(--text);text-align:center;" onchange="updateTargetRate(this.value)" />
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-row-title">Seuil alerte mortalité</div><div class="settings-row-sub">Déclenche une alerte</div></div>
+        <input type="number" id="mortalityThreshold" min="0" max="100" value="${state.settings.mortalityThreshold||15}" style="width:80px;padding:8px;border:1px solid var(--border-strong);border-radius:8px;background:var(--bg-2);color:var(--text);text-align:center;" onchange="updateMortalityThreshold(this.value)" />
+      </div>
+      <div class="settings-row" style="border-top:1px solid var(--border);">
+        <div><div class="settings-row-title" style="color:var(--danger);">Zone dangereuse</div><div class="settings-row-sub">Supprimer toutes mes données</div></div>
+        <button class="btn btn-ghost btn-sm" onclick="confirmResetData()">Réinitialiser</button>
+      </div>
+      <div class="settings-row" style="border-bottom:none;">
+        <div><div class="settings-row-title">Déconnexion</div><div class="settings-row-sub">Quitter cette session</div></div>
+        <button class="btn btn-outline btn-sm" onclick="logout()">Déconnexion</button>
+      </div>
+    </div>
+  `;
+}
+
+function updateTargetRate(v) { state.settings.targetRate = +v || 85; saveState(); refreshAll(); toast('Objectif mis à jour', 'success'); }
+function updateMortalityThreshold(v) { state.settings.mortalityThreshold = +v || 15; saveState(); refreshAll(); toast('Seuil mis à jour', 'success'); }
+function confirmResetData() {
+  showConfirm('⚠️ Supprimer toutes mes données ?', 'Action IRRÉVERSIBLE.', () => {
+    const uid = state.currentUserId;
+    state.lots = state.lots.filter(l => l.userId !== uid);
+    state.tempLogs = state.tempLogs.filter(t => t.userId !== uid);
+    state.clients = state.clients.filter(c => c.userId !== uid);
+    saveState();
+    toast('Données supprimées', 'success');
+    refreshAll();
+  });
+}
+
+/* ================================================================
+   SPECIES
+================================================================ */
+const SPECIES = {
+  poule: { emoji: '🐔', name: 'Poule', scientific: 'Gallus gallus domesticus' },
+  canard: { emoji: '🦆', name: 'Canard', scientific: 'Anas platyrhynchos domesticus' },
+  oie: { emoji: '🪿', name: 'Oie', scientific: 'Anser anser domesticus' },
+  pintade: { emoji: '🦚', name: 'Pintade', scientific: 'Numida meleagris' },
+  dinde: { emoji: '🦃', name: 'Dinde', scientific: 'Meleagris gallopavo' },
+  caille: { emoji: '🐦', name: 'Caille', scientific: 'Coturnix coturnix' }
+};
+
+function updateSpeciesDisplay(species) {
+  const sp = SPECIES[species] || SPECIES.poule;
+  $('#speciesIllustration').textContent = sp.emoji;
+  $('#speciesName').textContent = sp.name;
+  $('#speciesScientific').textContent = sp.scientific;
+}
+
+function changeSpecies(species) {
+  const u = currentUser();
+  if (u) {
+    u.species = species;
+    saveState();
+    updateSpeciesDisplay(species);
+    toast(`Espèce changée : ${SPECIES[species].name}`, 'success');
+  }
+}
+
+/* ================================================================
+   NOTIFICATIONS
+================================================================ */
+function updateNotifications() {
+  const lots = userLots();
+  const items = [];
+  // Hatch countdown
+  const upcoming = lots.filter(l => {
+    if (l.hatchingValidated) return false;
+    const h = expectedHatchDate(l);
+    if (!h) return false;
+    const d = daysBetween(today(), h);
+    return d >= 0 && d <= 3;
+  });
+  upcoming.forEach(l => {
+    const cd = hatchCountdown(l);
+    items.push({ type: cd.cls === 'today' ? 'success' : 'info', icon: cd.cls === 'today' ? 'hatching' : 'schedule', title: `Lot ${l.lotNumber || l.id.slice(-4)}`, text: cd.cls === 'today' ? "Éclosion aujourd'hui !" : `Éclosion dans ${cd.label}`, lotId: l.id });
+  });
+  // High mortality
+  const completed = lots.filter(l => l.hatchingValidated);
+  const highMort = completed.filter(l => calcLot(l).mortalityRate > (state.settings.mortalityThreshold||15));
+  if (highMort.length > 0) {
+    items.push({ type: 'danger', icon: 'warning', title: 'Mortalité élevée', text: `${highMort.length} lot(s) au-dessus du seuil` });
+  }
+  // Low humidity
+  const lowHum = userTempLogs().filter(t => t.humidity < 50).slice(-1);
+  if (lowHum.length > 0) {
+    items.push({ type: 'warn', icon: 'water_drop', title: 'Humidité basse', text: `Dernier relevé: ${lowHum[0].humidity}%` });
+  }
+  $('#notifBadge').textContent = items.length;
+  $('#notifBadge').style.display = items.length > 0 ? 'flex' : 'none';
+  if (items.length === 0) {
+    $('#notifList').innerHTML = '<div style="padding:30px 16px;text-align:center;color:var(--text-soft);font-size:13px;">Aucune notification</div>';
+  } else {
+    $('#notifList').innerHTML = items.map(it => `<div class="notif-item" onclick="${it.lotId ? `openLotModal('${it.lotId}');toggleNotifications();` : 'toggleNotifications();'}">
+      <div class="notif-item-icon ${it.type}"><span class="material-symbols-outlined" style="font-size:18px;">${it.icon}</span></div>
+      <div class="notif-item-content"><div class="notif-item-title">${escHtml(it.title)}</div><div class="notif-item-text">${escHtml(it.text)}</div></div>
+    </div>`).join('');
+  }
+}
+
+function toggleNotifications() {
+  $('#notifDropdown').classList.toggle('show');
+}
+function clearNotifications() {
+  $('#notifList').innerHTML = '<div style="padding:30px 16px;text-align:center;color:var(--text-soft);font-size:13px;">Aucune notification</div>';
+  $('#notifBadge').style.display = 'none';
+  toast('Notifications effacées', 'success');
+}
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.notif-dropdown') && !e.target.closest('[onclick*="toggleNotifications"]')) {
+    $('#notifDropdown').classList.remove('show');
+  }
+});
+
+/* ================================================================
+   QUICK ACTIONS
+================================================================ */
+function quickAction(type) {
+  switch (type) {
+    case 'collection':
+      openLotModal(null);
+      break;
+    case 'incubation':
+      if (userLots().filter(l => l.collectionValidated && !l.incubationValidated).length === 0) {
+        toast('Aucun lot en attente d\'incubation', 'warning');
+        return;
+      }
+      switchPage('incubations');
+      break;
+    case 'hatching':
+      if (userLots().filter(l => l.candling14Validated && !l.hatchingValidated).length === 0) {
+        toast('Aucun lot en attente d\'éclosion', 'warning');
+        return;
+      }
+      switchPage('hatching');
+      break;
+    case 'loss':
+      const active = userLots().filter(l => !l.hatchingValidated && l.collectionValidated);
+      if (active.length === 0) { toast('Aucun lot actif', 'warning'); return; }
+      const last = active[0];
+      currentLotId = last.id;
+      modalMode = 'edit';
+      const stage = getStage(last);
+      if (stage === 'collection') activeTab = 'collection';
+      else if (stage === 'incubation') activeTab = 'incubation';
+      else if (stage === 'j7') activeTab = 'j7';
+      else if (stage === 'j14') activeTab = 'j14';
+      else if (stage === 'hatching') activeTab = 'hatching';
+      unlockStage(stage);
+      break;
+  }
+}
+
+function aiRecommend() {
+  const lots = userLots();
+  if (lots.length === 0) {
+    toast('Démarrez un premier lot pour recevoir des recommandations', 'info');
+    return;
+  }
+  const completed = lots.filter(l => l.hatchingValidated);
+  if (completed.length === 0) {
+    toast('Complétez au moins une éclosion pour des analyses IA', 'info');
+    return;
+  }
+  // Generate insights
+  const avgHatch = completed.reduce((s,l) => s + calcLot(l).hatchRate, 0) / completed.length;
+  const avgMort = completed.reduce((s,l) => s + calcLot(l).mortalityRate, 0) / completed.length;
+  const target = state.settings.targetRate || 85;
+  let msg = '';
+  if (avgHatch >= target) msg = `🎉 Excellent ! Votre taux d'éclosion moyen (${avgHatch.toFixed(1)}%) dépasse l'objectif. Continuez ainsi !`;
+  else if (avgHatch >= target - 10) msg = `⚠️ Votre taux (${avgHatch.toFixed(1)}%) est proche de l'objectif (${target}%). Optimisez la température.`;
+  else msg = `❌ Taux bas (${avgHatch.toFixed(1)}%). Vérifiez vos conditions d'incubation et la qualité des œufs.`;
+  if (avgMort > 10) msg += ` Mortalité élevée (${avgMort.toFixed(1)}%) à surveiller.`;
+  toast(msg, avgHatch >= target ? 'success' : 'warning');
+}
+
+/* ================================================================
+   REFRESH
+================================================================ */
+function refreshAll() {
+  renderDashboard();
+  if ($('#page-eggs').classList.contains('active')) renderStagePage('eggs');
+  if ($('#page-incubations').classList.contains('active')) renderStagePage('incubations');
+  if ($('#page-hatching').classList.contains('active')) renderStagePage('hatching');
+  if ($('#page-stats').classList.contains('active')) renderStatsPage();
+  if ($('#page-sub').classList.contains('active')) {
+    if ($('#subPageContent').innerHTML.includes('calendar')) renderCalendar();
+    if ($('#subPageContent').innerHTML.includes('tempForm')) { populateTempLotSelect(); renderTempHistory(); renderTempChart(); }
+    if ($('#subPageContent').innerHTML.includes('costsLotsList')) renderCosts();
+    if ($('#subPageContent').innerHTML.includes('clientForm')) renderClients();
+  }
+}
+
+/* Ripple effect */
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn');
+  if (!btn || btn.disabled) return;
+  const rect = btn.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+  ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+  btn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+});
+
+/* ================================================================
+   INIT
+================================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  if (state.currentUserId && state.users.find(u => u.id === state.currentUserId)) {
+    enterApp();
+  } else {
+    $('#authScreen').style.display = 'flex';
+    $('#app').style.display = 'none';
+  }
+  $$('.modal-overlay').forEach(o => {
+    o.addEventListener('click', (e) => {
+      if (e.target === o) {
+        o.classList.remove('show');
+        if (o.id === 'confirmModal') { confirmCallback = null; $('#confirmOk').style.display = ''; }
+      }
+    });
+  });
+  // Initial species display
+  updateSpeciesDisplay('poule');
+});
+</script>
+</body>
+</html>
